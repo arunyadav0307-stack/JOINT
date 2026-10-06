@@ -1,0 +1,2372 @@
+% ============================================================================
+%  FINAL SUBMISSION VERSION  —  Phase 2.2 (V3), Introduction revised (Phase 3)
+%  Title : Joint Code-Dimension and k-Galois-Hull Enumerators for Simple-Root
+%          Constacyclic Codes over Square-Free Affine Algebras
+%  Author: Arun Kumar Yadav, K.R. Mangalam University, Gurugram, Haryana, India
+% ----------------------------------------------------------------------------
+%  Files required to compile:  references.bib, sn-mathphys-num-local.bst
+%  Build order:  pdflatex FILE  ->  bibtex FILE  ->  pdflatex FILE  ->  pdflatex FILE
+%  Result of the Phase-2.2 build: 26 pages, 0 errors, 0 overfull boxes,
+%  0 undefined references. That build predates the Phase-3 revision of the
+%  Introduction; the Introduction was rewritten (same mathematics, same
+%  citation set) and recompiled must be re-checked for page count and overfull
+%  boxes, because FINAL_SUBMISSION.bbl was reordered to match the new order of
+%  first citation. All figures are inlined vector TiKZ; no external images.
+% ----------------------------------------------------------------------------
+%  BEFORE UPLOAD (author action, tracked in SCIENTIFIC_ISSUES_TO_REVIEW.md):
+%   * add the corresponding-author e-mail address (item D3);
+%   * confirm the 2026 bibliographic fields at item C2, and the theorem number
+%     of the entry debnathAffine2026 at item C1 against the published
+%     Discrete Mathematics version;
+%   * attach programs/ and computed_data/ as supplementary material, or adjust
+%     the data-availability wording (item D2).
+% ============================================================================
+\documentclass[10pt,a4paper]{article}
+
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\fi
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{geometry}
+\usepackage[numbers,square,sort&compress]{natbib}
+\usepackage{hyperref}
+\providecommand{\bibcommenthead}{}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{caption}
+\captionsetup[figure]{name=Fig.,labelfont=bf,labelsep=space}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{13pt plus 2pt minus 2pt}{6pt plus 1pt}
+\titlespacing*{\subsection}{0pt}{10pt plus 2pt minus 2pt}{4pt plus 1pt}
+\setlist{topsep=4pt,itemsep=2pt,parsep=0pt}
+\setlength{\bibsep}{0pt plus 1pt}
+\renewcommand{\bibfont}{\small}
+\usepackage{etoolbox}
+\appto\normalsize{%
+  \setlength{\baselineskip}{12.2pt}%
+  \setlength{\abovedisplayskip}{5pt plus 2pt minus 1pt}%
+  \setlength{\belowdisplayskip}{5pt plus 2pt minus 1pt}%
+  \setlength{\abovedisplayshortskip}{3pt plus 1pt}%
+  \setlength{\belowdisplayshortskip}{4pt plus 1pt minus 1pt}%
+}
+\urlstyle{same}
+\geometry{textwidth=150mm,textheight=213mm,centering}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue,
+  pdftitle={Joint Code-Dimension and k-Galois-Hull Enumerators for Simple-Root Constacyclic Codes over Square-Free Affine Algebras},
+  pdfauthor={Arun Kumar Yadav},
+  pdfsubject={Coding theory}}
+
+% Section numbers are followed by a period in headings, as in 1. Introduction.
+\makeatletter
+\renewcommand{\@seccntformat}[1]{\csname the#1\endcsname.\quad}
+\makeatother
+
+% Ragged-right paragraph columns, so that narrow table cells are not stretched.
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\newcommand{\F}{\mathbb F}
+\newcommand{\K}{\mathbb K}
+\newcommand{\A}{\mathcal A}
+\newcommand{\Fs}{\mathcal F_s}
+\newcommand{\Os}{\mathcal O_s}
+\newcommand{\Epoly}{\mathscr E}
+\newcommand{\Hull}{\operatorname{Hull}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\code}{\mathrm{code}}
+\newcommand{\cand}{\mathrm{candidate}}
+\newcommand{\perpE}{\perp_E}
+\newcommand{\Dk}{D_k}
+
+% Keep theorem separation visible without the article class's large list gaps.
+\makeatletter
+\def\thm@space@setup{%
+  \thm@preskip=4pt plus 1pt minus 1pt%
+  \thm@postskip=4pt plus 1pt minus 1pt}
+\patchcmd{\proof}{\topsep6\p@\@plus6\p@\relax}
+  {\topsep4\p@\@plus2\p@\relax}{}{}
+\makeatother
+\setlength{\emergencystretch}{1em}
+
+% Numbered environments share one counter per section; equations are numbered
+% by section as well, so that every reference carries its own location.
+\numberwithin{equation}{section}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Thin rules mark the main theorem of the paper; used once, in Section 4.
+\newenvironment{keyresult}
+  {\par\addvspace{3pt}\noindent\rule{\linewidth}{0.4pt}\par\nobreak\addvspace{3pt}}
+  {\par\nobreak\addvspace{3pt}\noindent\rule{\linewidth}{0.4pt}\par\addvspace{3pt}}
+
+\title{Joint Code-Dimension and \texorpdfstring{$k$}{k}-Galois-Hull Enumerators for Simple-Root Constacyclic Codes over Square-Free Affine Algebras}
+\author{\normalsize Arun Kumar Yadav\\
+\small School of Basic and Applied Sciences,\\
+\small K.R. Mangalam University, Gurugram, Haryana, India}
+\date{}
+
+\begin{document}
+\maketitle
+
+
+\begin{center}
+\noindent\textbf{Abstract}
+\end{center}
+For compatible twists, this paper counts the simple-root constacyclic codes over a fixed square-free affine algebra $\A$ defined over a finite field, classified jointly by code dimension and $k$-Galois-hull dimension. Every such code is a product of component ideals determined by a labeled choice of irreducible factors of the component moduli. Under the compatibility condition, a Frobenius-twisted reciprocal permutes these factors, and the hull dimension becomes a weighted count of $1$-to-$0$ transitions in the selection word read along each orbit of this permutation. A two-state weighted transfer matrix, or the equivalent closed one-orbit polynomial, turns the orbit data into a bivariate generating polynomial whose coefficients are exactly the numbers of codes realizing each pair of code dimension and hull dimension. The polynomial yields the code-dimension and hull-dimension distributions, the exact count of complementary-dual codes, and the mean, variance and conditional distribution of the hull dimension at each attainable code dimension. The formulas agree with direct finite-field linear-algebra computations in characteristics $2$, $3$ and $5$ and recover published benchmark counts, and for $\F_{32}$ with $n=31$ they give the exact enumerator over all $2^{31}$ labeled factor selections without enumerating them.
+
+\medskip
+\noindent\textbf{Keywords:} $k$-Galois hulls; constacyclic codes; square-free affine algebras; exact labeled enumeration; generating polynomials; transfer matrices.
+
+\medskip
+\noindent\textbf{2020 MSC:} 94B05, 94B15, 05A15.
+
+\section{Introduction}\label{sec:intro}
+
+The hull of a linear code $C$ is the intersection $C\cap C^{\perp}$ with its
+dual, and its dimension is a structural invariant of the code. Replacing the
+Euclidean inner product by a Frobenius-twisted pairing in one argument leads to
+the $k$-Galois inner product and to the $k$-Galois hull, of which the Euclidean
+and Hermitian hulls are the cases $k=0$ and $k$ equal to half the degree of the
+field \cite{fanZhang2017}. For cyclic-type codes the ambient space is a
+polynomial quotient, so duals, intersections and hence hull dimensions are
+accessible to factorization arguments \cite{huffmanPless2003}. Hull dimensions
+therefore describe a single code and, at the same time, define a statistic of an
+entire family; this paper studies the joint distribution of that statistic and
+the code dimension.
+
+The hull dimension, and not only its vanishing, controls several constructions.
+The algorithms that test permutation equivalence of two linear codes, and those
+that compute the automorphism group of a code, become expensive when the hull is
+large, so the hull dimension measures their complexity \cite{sendrier1997}.
+Codes with a trivial hull are the linear codes with complementary duals studied
+by Massey \cite{massey1992}, and they can attain the Gilbert--Varshamov bound
+\cite{sendrier2004}. In quantum coding the hull
+dimension of a classical code determines the number of entangled pairs needed by
+the corresponding entanglement-assisted quantum error-correcting code
+\cite{brun2006,wildeBrun2008}, and the same mechanism is still used to obtain
+quantum codes from constacyclic codes over rings \cite{zhang2026}.
+
+The hulls of cyclic and negacyclic codes over finite fields were the first to be
+described through the factorization of the modulus. Yang and Massey
+characterized when a cyclic code has a complementary dual \cite{yangMassey1994},
+Skersys computed the average dimension of the Euclidean hull over the cyclic
+codes of a fixed length \cite{skersys2003}, and Sangwisut et al.\ determined the
+Euclidean and Hermitian hull dimensions of cyclic and negacyclic codes in closed
+form and counted the codes realizing each prescribed hull dimension
+\cite{sangwisut2015}. Constacyclic codes, which contain both families, were
+studied in the same manner: Jitman and Sangwisut obtained the average dimension
+of the Hermitian hull of constacyclic codes over fields of square order
+\cite{jitmanSangwisut2018}, and Debnath et al.\ extended the dimension formulas
+to the $k$-Galois pairing for constacyclic codes over finite fields, together
+with counts of the codes of a prescribed Galois hull dimension under
+restrictions on the field parameters \cite{debnathConstacyclic2023}; a correction
+appeared in \cite{debnathCorrection2023}. This line continues with the average
+Galois hull dimension of constacyclic codes \cite{debnathAverage2025} and with
+the small values a Galois hull dimension can attain \cite{debnathSmall2026}.
+
+The Galois pairing also made the hull accessible for codes that are not
+constacyclic. Liu and Pan characterized the Galois hull of an arbitrary linear
+code over a finite field \cite{liuPan2020}, Cao constructed MDS codes with
+Galois hulls of prescribed dimensions \cite{cao2021}, and Fu and Liu treated
+Galois self-orthogonal constacyclic codes \cite{fuLiu2022}. More recently,
+generator descriptions have been derived that avoid passing to the dual code:
+generator polynomial matrices for the Galois hulls of multi-twisted codes
+\cite{eldinSole2026}, and generator matrices for the intersection of a linear
+code with its Galois dual \cite{eldinLeroy2026}, the operation that defines the
+hull.
+
+A separate question is not what the hull of one chosen code is, but how hull
+dimensions are distributed over a family. For unrestricted linear codes over a
+finite field, a mass formula gives the number of codes of a fixed length and
+Euclidean hull dimension \cite{sendrier1997}, and the sequences of these counts
+as the hull dimension grows have been studied recently \cite{bouyuklieva2026}.
+Distributions and asymptotics have also been obtained for double cyclic codes
+\cite{gao2023} and for double circulant and four circulant codes with small hull
+dimension \cite{aliabadi2026}. The averages computed in \cite{skersys2003},
+\cite{jitmanSangwisut2018} and \cite{debnathAverage2025} are the first moments of
+such distributions and do not determine them.
+
+When the alphabet is a ring rather than a field, the factorization theory
+changes. The structure theory of cyclic and negacyclic codes over finite chain
+rings \cite{dinhLopezPermouth2004} and the Hamming-distance theory over such
+rings \cite{nortonSalagean2000} provide the background for the analyses below.
+Talbi et al.\ studied the hulls of cyclic serial codes over a finite chain ring
+\cite{talbi2022}; Jitman et al.\ treated cyclic codes over $\mathbb{Z}_4$, where
+the length need not be coprime to the characteristic \cite{jitmanZ4}; and Pathak
+and Sharma covered the oddly even case, which requires separate arguments
+\cite{pathakZ4}. Constacyclic codes over a finite non-chain ring, with
+applications to quantum codes, were considered in \cite{zhang2026}. Closest to
+the present setting, Debnath et al.\ studied $k$-Galois hulls of constacyclic
+codes over affine algebra rings, exhibiting generators of the duals and hulls, a
+hull-dimension formula, LCD criteria and quantum-code applications
+\cite{debnathAffine2026}.
+
+Two kinds of results have therefore been obtained: descriptions of the hull of
+an individual code, and counts or averages of a single statistic of a family.
+Neither kind determines the joint distribution of the code dimension and the
+hull dimension, and it is convenient to separate three questions: (i) which hull
+dimensions occur; (ii) how many codes realize a prescribed hull dimension; and
+(iii) how many codes realize each pair $(\kappa,\eta)$ formed by a code
+dimension $\kappa$ and a hull dimension $\eta$. Questions (i) and (ii) are
+answered for cyclic and negacyclic codes in \cite{sangwisut2015} and, over
+finite fields, for constacyclic codes in \cite{debnathConstacyclic2023}, where
+the counts require restrictions on the field parameters, while for unrestricted
+linear codes with respect to the Euclidean dual, question (iii) is answered by
+\cite{sendrier1997} and \cite{bouyuklieva2026}. Over an affine algebra only
+question (i) has been answered, by the hull-dimension formula of
+\cite{debnathAffine2026}. Such a formula does not record the code dimensions at
+which the hull dimensions occur, and a hull-only count cannot be aggregated over
+the different factor selections into a joint distribution. Answering question
+(iii) in this setting therefore requires carrying the code dimension along with
+the hull dimension and treating cycles of the factor permutation that are longer
+than the fixed points and two-cycles that arise in the Euclidean and Hermitian
+cases.
+
+Motivated by this gap, we determine in this paper the joint distribution of code
+dimension and $k$-Galois hull dimension for simple-root constacyclic codes over
+a fixed square-free affine algebra $\A$ with labeled field components. The
+counted objects are labeled factor selections, in bijection with the
+$\lambda$-constacyclic codes over $\A$ (Lemmas~\ref{lem:complete}
+and~\ref{lem:global-code}); each is a distinct submodule of the fixed ambient
+space, and no isometry classes are formed. The output is a bivariate generating
+polynomial in which the exponents of $u$ and $z$ record the code dimension
+$\kappa$ and the $k$-Galois hull dimension $\eta_k$, so that its coefficients
+answer the three questions above simultaneously. The method is to
+decompose $\A$ into its field components, to translate $\lambda$-constacyclic
+codes into labeled selections of irreducible factors of the component moduli,
+and to follow the $k$-Galois dual through the Frobenius-twisted reciprocal
+permutation of those factors. Both statistics are additive over the orbits of
+this permutation, and this is what makes the enumeration factorize.
+
+The results of the paper are the following.
+(i) The $k$-Galois dual of a component code is generated by the normalized
+inverse-Frobenius reciprocal of the parity-check polynomial and is constacyclic
+with twist $\lambda_s^{-p^{d_s-k}}$ (Theorem~\ref{thm:dual-generator}), obtained
+from the classical Euclidean description of a constacyclic dual
+(Lemma~\ref{lem:ordinary-reciprocal}) by the coordinatewise inverse Frobenius
+(Proposition~\ref{prop:dual-translation}).
+(ii) Under the compatibility condition \eqref{eq:compat} the reciprocal
+permutes the irreducible factors of the component modulus. The hull support of a
+code is then a cyclic boundary statistic on the orbits of that permutation, and
+the hull dimension is a weighted count of the resulting $1$-to-$0$ transitions
+(Theorem~\ref{thm:hull-support} and Proposition~\ref{prop:boundary}).
+(iii) Each orbit contributes a two-state weighted transfer matrix whose trace,
+the orbit polynomial, also has a closed binomial form
+(Propositions~\ref{prop:transfer-matrix}--\ref{prop:closed}).
+(iv) The exact labeled joint $(\kappa,\eta)$ enumerator over the CRT product,
+with orbit weights $w_O=m_sd_O$, is
+\[
+\Epoly(u,z)=\sum_{C}u^{\kappa(C)}z^{\eta_k(C)}
+ =\prod_{s}\prod_{O\in\Os}\operatorname{tr}\bigl(T_{w_O}(u,z)^{a_O}\bigr)
+\]
+(Theorem~\ref{thm:central}), where the sum runs over all $\lambda$-constacyclic
+codes over $\A$. Items (i)--(iii) assemble established descriptions of component
+duals and closed-walk counting; the joint enumeration (iv) combines them into
+one product formula. From it the two marginal distributions, the exact LCD
+count, and the mean, variance and conditional distribution of the hull dimension
+follow by specialization
+(Corollaries~\ref{cor:total}--\ref{cor:conditional-variance}), while the
+extension-degree weights $w_O$ convert component dimensions into dimensions over
+the common base field.
+
+The enumeration is exact: the coefficients of $\Epoly(u,z)$ are integers, the
+conditional moments are reduced rationals, and for $q=32$, $n=31$ the orbit
+recurrence evaluates all $2^{31}$ labeled factor selections without enumerating
+them. For the families in characteristics $2$, $3$ and $5$ listed in
+Section~\ref{sec:verification}, every $k$-Galois hull dimension computed
+directly by finite-field linear algebra agrees with the orbit formula, and two
+published benchmark counts \cite{sangwisut2015} are recovered. The orbit product
+assumes simple-root moduli and compatible twists, and codes are counted as
+labeled selections rather than isometry classes; the scope is stated at the end
+of Section~\ref{sec:conclusion}. Figure~\ref{fig:pipeline} summarizes the
+workflow. Section~\ref{sec:setting} fixes the algebraic setting and the
+correspondence between constacyclic codes and labeled factor selections,
+Section~\ref{sec:duality} develops component duality and the reciprocal-orbit
+description of hull support, Section~\ref{sec:enumeration} derives the
+enumerators with their statistical consequences, Section~\ref{sec:examples}
+presents the examples and the computational validation, and
+Section~\ref{sec:conclusion} collects the conclusions.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  node distance=2.4mm,
+  stage/.style={draw,line width=0.4pt,align=center,inner sep=1.0mm,
+                text width=20mm,minimum height=14mm,font=\scriptsize},
+  outcome/.style={stage,line width=0.9pt},
+  ar/.style={-{Latex[length=1.1mm,width=0.9mm]},line width=0.4pt}]
+\node[stage]   (s1) {square-free\\affine\\algebra\\$\A\cong\prod_{s}K_s$};
+\node[stage,right=of s1] (s2) {component\\moduli $M_s$\\$=x^n-\lambda_s$\\factors $\Fs$};
+\node[stage,right=of s2] (s3) {compatible\\reciprocal\\$\tau_{s,k}$; orbits\\$O$, $a_O$, $w_O$};
+\node[stage,right=of s3] (s4) {selection\\words $\varepsilon_O$\\code dim.\ $\kappa$,\\hull dim.\ $\eta_k$};
+\node[stage,right=of s4] (s5) {one-orbit\\polynomial\\$\operatorname{tr}(T_{w}^{a})$\\global $\Epoly$};
+\node[outcome,right=of s5] (s6) {distributions\\LCD count,\\moments,\\verification};
+\draw[ar] (s1) -- (s2);
+\draw[ar] (s2) -- (s3);
+\draw[ar] (s3) -- (s4);
+\draw[ar] (s4) -- (s5);
+\draw[ar] (s5) -- (s6);
+\end{tikzpicture}
+\caption{The workflow of the paper. Each box names one construction of
+Sections~\ref{sec:setting}--\ref{sec:enumeration}, in the order in which it is
+applied: from the CRT decomposition of the affine algebra to the one-orbit
+polynomial and the global joint enumerator
+$\Epoly(u,z)=\prod_{s}\prod_{O\in\Os}\operatorname{tr}(T_{w_O}(u,z)^{a_O})$. The
+final box lists the consequences of \S\ref{sec:consequences} and the validation
+of \S\ref{sec:verification}.}
+\label{fig:pipeline}
+\end{figure}
+
+\section{The affine algebra, constacyclic codes and factor selections}\label{sec:setting}
+
+This section fixes the algebraic setting: the square-free affine algebra and its
+CRT decomposition (\S\ref{sec:setup}), the correspondence between constacyclic
+codes and labeled factor selections (\S\ref{sec:selections}), the global
+$k$-Galois pairing (\S\ref{sec:pairing}), and the dimension and support
+conventions used throughout (\S\ref{sec:dimensions}).
+
+\subsection{Square-free affine algebras and their CRT decomposition}\label{sec:setup}
+
+Throughout, $p$ is prime and
+\[
+q=p^e,\qquad e\geq 1 .
+\]
+For each component index $s$, let
+\[
+K_s=\F_{q^{m_s}}=\F_{p^{d_s}},\qquad d_s=e m_s,\qquad m_s\geq 1 .
+\]
+The component labels are fixed once and for all, and $\A$ always denotes the
+ambient affine algebra.
+
+The affine algebra is presented as
+\begin{equation}\label{eq:algebra}
+\A=\F_q[X_1,\ldots,X_\ell]
+ \big/\langle t_1(X_1),\ldots,t_\ell(X_\ell)\rangle,
+\end{equation}
+where $\ell\geq 1$ and each $t_i$ is monic, square-free, and of positive degree.
+Since each $t_i$ is square-free, $\A$ is reduced.
+
+\begin{proposition}[Square-free component decomposition]\label{prop:decomposition}
+The affine algebra \eqref{eq:algebra} has a fixed labeled decomposition
+\begin{equation}\label{eq:decomp}
+\A\cong\prod_{s=1}^{N}K_s,
+\end{equation}
+with finite fields $K_s=\F_{q^{m_s}}$.
+\end{proposition}
+
+\begin{proof}
+Each $t_i$ is separable, so the one-variable quotient $\F_q[X_i]/\langle t_i\rangle$
+is a finite \'etale $\F_q$-algebra: factoring $t_i$ into pairwise coprime monic
+irreducibles and applying the Chinese remainder theorem exhibits it as a finite
+product of finite separable field extensions of $\F_q$. The algebra
+\eqref{eq:algebra} is the tensor product over $\F_q$ of these one-variable
+quotients, and a tensor product of finite \'etale algebras is finite \'etale. A
+finite \'etale algebra over a finite field is a finite product of finite fields.
+Fixing the ordered tensor factors and the resulting CRT idempotents fixes the
+component labels. The positive-degree hypothesis excludes the zero quotient.
+\end{proof}
+
+We fix the labeled isomorphism \eqref{eq:decomp} of
+Proposition~\ref{prop:decomposition} throughout. Thus an element of $\A$ is
+written as a tuple $(a_s)_s$, the primitive product idempotents are fixed by the
+component labels, and all global constructions below use these tuple
+coordinates. Dimensions of global objects are taken over $\F_q$, whereas
+component dimensions are taken over $K_s$.
+
+\subsection{Constacyclic codes and labeled factor selections}\label{sec:selections}
+
+Fix $n\geq 1$ with $\gcd(n,p)=1$ and choose $\lambda_s\in K_s^*$ for every
+component. Set
+\[
+M_s(x)=x^n-\lambda_s .
+\]
+Since $\gcd(n,p)=1$, each $M_s$ is square-free. Let $\Fs$ be the set of distinct
+monic irreducible factors of $M_s$ over $K_s$. For a subset $J_s\subseteq\Fs$,
+define
+\[
+g_{J_s}(x)=\prod_{f\in J_s}f(x),
+\qquad
+h_{J_s}(x)=\frac{M_s(x)}{g_{J_s}(x)} .
+\]
+The component code $C_s(J_s)$ is the principal ideal generated by $g_{J_s}$ in
+$K_s[x]/\langle M_s\rangle$. Throughout, a factor is \emph{selected} if it is a
+factor of the generator $g_{J_s}$, and we write $1$ for selected and $0$ for not
+selected; a selected factor contributes to the codimension, not to the code
+dimension.
+
+\begin{lemma}[Factor-selection parametrization]\label{lem:factor-selection}
+For each $s$, the distinct constacyclic ideals in the simple-root quotient
+$K_s[x]/\langle M_s\rangle$ are in bijection with subsets $J_s\subseteq\Fs$.
+Their $K_s$-dimension is
+\[
+\dim_{K_s}C_s(J_s)=n-\sum_{f\in J_s}\deg(f).
+\]
+The global product code has $\F_q$-dimension
+\[
+\dim_{\F_q}C(J)=\sum_{s=1}^{N}m_s\dim_{K_s}C_s(J_s).
+\]
+\end{lemma}
+
+\begin{proof}
+The simple-root quotient is a product of fields indexed by the distinct
+irreducible factors of $M_s$. A principal ideal is obtained by choosing which
+factor components vanish, equivalently by choosing the product $g_{J_s}$. Unique
+factorization gives injectivity of the selection-to-ideal map, and every ideal
+is obtained in this way. The usual degree formula gives the component dimension.
+Since $[K_s:\F_q]=m_s$, the global dimension is the weighted sum displayed
+above.
+\end{proof}
+
+The global selection space is therefore
+\[
+\mathscr C=\prod_{s=1}^{N}\{J_s:J_s\subseteq\Fs\},
+\qquad
+|\mathscr C|=2^{\sum_s|\Fs|} .
+\]
+This is a labeled factor-selection count: no quotient by rotations,
+automorphisms, isometries, or code equivalence is taken, and the count does not
+depend on the order of the component labels.
+
+The component twists assemble into the global tuple
+\[
+\lambda=(\lambda_s)_{s=1}^{N}\in\A^* .
+\]
+The global constacyclic ambient module is
+\begin{equation}\label{eq:ambient}
+\mathcal M_\lambda
+ =\A[x]/\langle x^n-\lambda\rangle
+ \cong\prod_{s=1}^{N}K_s[x]/\langle x^n-\lambda_s\rangle
+ \cong\prod_{s=1}^{N}K_s^n,
+\end{equation}
+where the last identification is the coefficient-vector identification. The
+global constacyclic shift is therefore componentwise, and the fixed CRT
+isomorphism embeds a global code in $\A^n$ as a tuple of component codes.
+
+\begin{definition}[Constacyclic code over $\A$]\label{def:constacyclic-A}
+Let $\lambda\in\A^{*}$. The \emph{$\lambda$-shift} on $\A^{n}$ is
+\[
+T_\lambda(c_0,c_1,\dots,c_{n-1})=(\lambda c_{n-1},c_0,\dots,c_{n-2}).
+\]
+A \emph{$\lambda$-constacyclic code of length $n$ over $\A$} is an
+$\A$-submodule $C\subseteq\A^{n}$ with $T_\lambda(C)\subseteq C$. Under the
+coefficient-vector identification $\A^{n}\cong\mathcal M_\lambda=\A[x]/\langle x^{n}-\lambda\rangle$,
+$(c_0,\dots,c_{n-1})\mapsto\sum_i c_ix^{i}$, the map $T_\lambda$ becomes
+multiplication by $x$. Hence the $\lambda$-constacyclic codes over $\A$ are
+exactly the $\A[x]$-submodules (equivalently, the ideals) of
+$\mathcal M_\lambda$.
+\end{definition}
+
+\begin{remark}\label{rem:A-linear}
+The definition requires $\A$-linearity. A subspace of $\A^{n}$ that is only
+$\F_q$-linear and closed under $T_\lambda$ need not be an $\A$-submodule, and
+such subspaces are not counted here.
+\end{remark}
+
+For $J=(J_s)_s\in\mathscr C$ put
+$C(J)=\prod_{s=1}^{N}C_s(J_s)\subseteq\prod_{s=1}^{N}K_s^n\cong\A^n$;
+Lemma~\ref{lem:global-code} below shows that $C(J)$ is a $\lambda$-constacyclic
+code over $\A$.
+
+\begin{lemma}[Completeness of factor selections]\label{lem:complete}
+Let $e_1,\dots,e_N$ be the primitive idempotents of $\A$ corresponding to the
+fixed decomposition \eqref{eq:decomp} (so $e_s$ is the tuple with $1$ in
+component $s$ and $0$ elsewhere). Every $\lambda$-constacyclic code
+$C\subseteq\A^{n}$, that is, every $\A[x]$-submodule $C$ of
+$\mathcal M_\lambda$, satisfies
+\[
+C=\bigoplus_{s=1}^{N} e_sC,
+\]
+where each $e_sC$ is an ideal of
+$e_s\mathcal M_\lambda\cong K_s[x]/\langle x^{n}-\lambda_s\rangle$.
+Consequently there is a unique $J=(J_s)_s\in\mathscr C$ with $C=C(J)$.
+\end{lemma}
+
+\begin{proof}
+\emph{Step 1 (splitting).} The elements $e_s\in\A$ satisfy $e_se_t=\delta_{st}e_s$
+and $\sum_s e_s=1$. Since $C$ is an $\A$-module, $e_sC\subseteq C$ for every $s$.
+Any $c\in C$ can be written as $c=\sum_s e_sc$, so $C=\sum_s e_sC$. The sum is
+direct: if $\sum_s e_sc_s=0$ with $c_s\in C$, multiplying by $e_t$ gives
+$e_tc_t=0$ for every $t$.
+
+\emph{Step 2 (components).} Multiplication by $e_s$ gives a surjective
+$\A[x]$-linear map $\mathcal M_\lambda\to e_s\mathcal M_\lambda$. We have
+$e_s\A=K_s$ and $e_s(x^{n}-\lambda)=e_s(x^{n}-\lambda_s)$. Therefore
+\[
+e_s\mathcal M_\lambda= e_s\A[x]\big/\langle e_s(x^{n}-\lambda)\rangle
+ \cong K_s[x]/\langle x^{n}-\lambda_s\rangle,
+\]
+and this is the $s$-th factor of \eqref{eq:ambient}. The set $e_sC$ is the image
+of an $\A[x]$-submodule under an $\A[x]$-linear map, so it is an
+$\A[x]$-submodule of $e_s\mathcal M_\lambda$. On $e_s\mathcal M_\lambda$ the ring
+$\A$ acts through the projection $\A\to K_s$. So $e_sC$ is a $K_s[x]$-submodule
+of $K_s[x]/\langle M_s\rangle$, which is the same thing as an ideal.
+
+\emph{Step 3 (identification).} By Lemma~\ref{lem:factor-selection}, every ideal
+of the simple-root quotient $K_s[x]/\langle M_s\rangle$ equals
+$C_s(J_s)=\langle g_{J_s}\rangle$ for exactly one $J_s\subseteq\Fs$. Applying
+this to each $e_sC$ and using Step 1 gives $C=\bigoplus_s C_s(J_s)=C(J)$ with
+$J=(J_s)_s$.
+
+\emph{Uniqueness.} If $C(J)=C(J')$, multiplying by $e_s$ gives
+$C_s(J_s)=C_s(J'_s)$ for every $s$, and Lemma~\ref{lem:factor-selection} gives
+$J_s=J'_s$ for every $s$.
+\end{proof}
+
+\begin{lemma}[Global CRT ambient module and factor-selection codes]\label{lem:global-code}
+Recall the definition of $C(J)$ for $J\in\mathscr C$. Equivalently, $C(J)$ is the
+ideal of $\mathcal M_\lambda$ generated by the tuple $g_J=(g_{J_s})_s$. By
+Definition~\ref{def:constacyclic-A}, each $C(J)$ is a $\lambda$-constacyclic code
+over $\A$, and different labeled tuples $J\neq J'$ give different codes.
+Together with Lemma~\ref{lem:complete}, the map
+\[
+\mathscr C\longrightarrow\{\lambda\text{-constacyclic codes of length }n\text{ over }\A\},
+\qquad J\longmapsto C(J),
+\]
+is a bijection.
+\end{lemma}
+
+\begin{proof}
+The product and coefficient-vector identifications are the CRT isomorphisms
+\eqref{eq:ambient}. Each $C_s(J_s)$ is an ideal of $K_s[x]/\langle M_s\rangle$, so
+$C(J)$ is an ideal of $\mathcal M_\lambda$. It is the ideal generated by $g_J$, and
+it is a $\lambda$-constacyclic code over $\A$ by
+Definition~\ref{def:constacyclic-A}. If $J\neq J'$, choose $s$ with
+$J_s\neq J'_s$. Lemma~\ref{lem:factor-selection} gives
+$C_s(J_s)\neq C_s(J'_s)$, so the two products have different $s$-components
+(injectivity). Surjectivity is Lemma~\ref{lem:complete}.
+\end{proof}
+
+\subsection{The \texorpdfstring{$k$}{k}-Galois pairing and the global code}\label{sec:pairing}
+
+For $x=(x_i)$ and $y=(y_i)$ in $K_s^n$, define
+\[
+\sigma_{s,k}(a)=a^{p^k},
+\qquad
+\rho_{s,k}(a)=a^{p^{d_s-k}}=\sigma_{s,k}^{-1}(a),
+\qquad 0\leq k<e .
+\]
+When the component index is clear we write $\sigma(a)=a^{p^k}$ and
+$\rho(a)=a^{p^{d_s-k}}$. The $k$-Galois pairing is
+\begin{equation}\label{eq:pairing}
+\langle x,y\rangle_{s,k}
+ =\sum_{i=0}^{n-1}x_i\sigma_{s,k}(y_i)
+ =\sum_{i=0}^{n-1}x_i y_i^{p^k},
+\end{equation}
+and we abbreviate $\langle x,y\rangle_k=\sum_i x_i y_i^{p^k}$ when the component
+is fixed. The $k$-Galois dual and hull are
+\[
+\Dk(C)=\{y\in K_s^n:\langle c,y\rangle_{s,k}=0\text{ for every }c\in C\},
+\qquad
+\Hull_k(C)=C\cap \Dk(C).
+\]
+The pairing \eqref{eq:pairing} is $K_s$-linear in its first argument and
+$\sigma_{s,k}$-semilinear in its second argument; the defining annihilator is
+nevertheless a $K_s$-linear subspace. For $k=0$ it is Euclidean. On
+$K_s=\F_{p^{d_s}}$ it is Hermitian precisely when $d_s$ is even and $k=d_s/2$;
+thus for even $e$ the base-field choice $k=e/2$ is Hermitian on the components
+with $m_s=1$ but not on those with $m_s>1$.
+
+\begin{proposition}[$k$-Galois dual translation]\label{prop:dual-translation}
+For every $K_s$-linear code $C\subseteq K_s^n$,
+\[
+\Dk(C)=\rho_{s,k}(C^{\perpE}),
+\]
+where $C^{\perpE}$ is the ordinary Euclidean dual and $\rho_{s,k}$ acts
+coordinatewise.
+\end{proposition}
+
+\begin{proof}
+The $k$-Galois condition is $\sum_i c_i\sigma_{s,k}(y_i)=0$ for every $c\in C$.
+Setting $z=\sigma_{s,k}(y)$ gives $z\in C^{\perpE}$, and applying the inverse
+coordinatewise map gives $y=\rho_{s,k}(z)$.
+\end{proof}
+
+\begin{lemma}[Global Frobenius and $k$-Galois pairing]\label{lem:global-pairing}
+Define the componentwise maps on $\A$ by
+\[
+\sigma_{\A,k}((a_s)_s)=(\sigma_{s,k}(a_s))_s,
+\qquad
+\rho_{\A,k}((a_s)_s)=(\rho_{s,k}(a_s))_s .
+\]
+They are mutually inverse ring automorphisms. For $b\in\F_q$ and $a\in\A$, they
+satisfy
+\[
+\sigma_{\A,k}(ba)=b^{p^k}\sigma_{\A,k}(a),\qquad
+\rho_{\A,k}(ba)=b^{p^{e-k}}\rho_{\A,k}(a).
+\]
+Thus they are semilinear over $\F_q$ with respect to inverse base-field
+automorphisms. On $\A^n$, define the $\A$-valued global $k$-Galois pairing
+\[
+\langle x,y\rangle_{\A,k}
+ =\sum_{i=0}^{n-1}x_i\sigma_{\A,k}(y_i)
+ =\left(\sum_{i=0}^{n-1}x_{s,i}y_{s,i}^{p^k}\right)_{s=1}^{N}.
+\]
+For a global code $C\subseteq\A^n$, define
+\[
+\begin{gathered}
+D_{\A,k}(C)=\{y\in\A^n:\langle c,y\rangle_{\A,k}=0_{\A}\text{ for every }c\in C\},
+\\
+\Hull_{\A,k}(C)=C\cap D_{\A,k}(C).
+\end{gathered}
+\]
+\end{lemma}
+
+\begin{proof}
+Each $\sigma_{s,k}$ is a field automorphism of $K_s$ with inverse $\rho_{s,k}$,
+and the product of component automorphisms is a ring automorphism of $\A$. Under
+the fixed CRT isomorphism, $\sigma_{\A,k}(a)=a^{p^k}$, so this is the intrinsic
+power map on $\A$. The product idempotents are fixed because their coordinates are
+$0$ or $1$. The restrictions of $\sigma_{s,k}$ and $\rho_{s,k}$ to $\F_q$ are
+$b\mapsto b^{p^k}$ and $b\mapsto b^{p^{e-k}}$, respectively, since $d_s=em_s$.
+The displayed pairing is the componentwise tuple of the already-defined component
+pairings; zero in $\A\cong\prod_sK_s$ means zero in every component.
+\end{proof}
+
+\begin{lemma}[Global $k$-Galois dual decomposition]\label{lem:global-dual}
+For every labeled factor-selection code,
+\[
+D_{\A,k}(C(J))
+ =\prod_{s=1}^{N}\Dk(C_s(J_s)).
+\]
+\end{lemma}
+
+\begin{proof}
+Let $y=(y_s)_s$. If $y\in D_{\A,k}(C(J))$, fix $s$ and choose a global codeword
+whose $s$-component is an arbitrary $c_s\in C_s(J_s)$ and whose other components
+are zero. The $s$-component of the global pairing is then
+$\langle c_s,y_s\rangle_{s,k}$, so it is zero for every $c_s$; hence
+$y_s\in \Dk(C_s(J_s))$. This proves one inclusion. Conversely, if every $y_s$
+belongs to its component dual, then every component of
+$\langle c,y\rangle_{\A,k}$ is zero for every $c\in C(J)$, so the tuple pairing
+is $0_{\A}$.
+\end{proof}
+
+\begin{lemma}[Global hull decomposition]\label{lem:global-hull}
+The global $k$-Galois hull decomposes as
+\[
+\Hull_{\A,k}(C(J))
+ =\prod_{s=1}^{N}\Hull_k(C_s(J_s)).
+\]
+\end{lemma}
+
+\begin{proof}
+Use the preceding dual decomposition and the elementary identity
+$(\prod_s U_s)\cap(\prod_s V_s)=\prod_s(U_s\cap V_s)$ for subspaces in a finite
+direct product.
+\end{proof}
+
+\subsection{Global dimensions, factor supports and notation}\label{sec:dimensions}
+
+\begin{proposition}[Global $\F_q$-dimension additivity]\label{prop:global-dimensions}
+For every $J\in\mathscr C$,
+\[
+\begin{gathered}
+\dim_{\F_q}C(J)=\sum_{s=1}^{N}m_s\dim_{K_s}C_s(J_s),
+\\
+\dim_{\F_q}\Hull_{\A,k}(C(J))
+ =\sum_{s=1}^{N}m_s\dim_{K_s}\Hull_k(C_s(J_s)).
+\end{gathered}
+\]
+In particular, an orbit factor of common $K_s$-degree $d_O$ contributes the
+global weight $w_O=m_s d_O$.
+\end{proposition}
+
+\begin{proof}
+The $\F_q$-dimension of a finite direct product is the sum of the component
+$\F_q$-dimensions, and $[K_s:\F_q]=m_s$. Apply the component-to-base-field
+conversion to the global code and to the global hull decomposition. A factor of
+$K_s$-degree $d_O$ contributes $m_s d_O$ over $\F_q$.
+\end{proof}
+
+Nondegeneracy of the component pairings implies that a code and its dual have
+complementary global $\F_q$-dimensions. Hence the hull dimension cannot exceed
+either the code dimension or its codimension in $\A^n$.
+
+For a labeled selection define its generator-factor support and its surviving
+CRT support by
+\[
+\operatorname{Supp}_{\mathrm{gen}}(J)=\{(s,f):f\in J_s\},
+\qquad
+\operatorname{Supp}_{\mathrm{CRT}}(C(J))
+ =\{(s,f):f\in\Fs\setminus J_s\}.
+\]
+For any component or global ideal, $\operatorname{Supp}_{\mathrm{CRT}}$ denotes
+the set of factor components on which the ideal is nonzero. The global hull
+support is the union of the component hull supports of
+Lemma~\ref{lem:global-hull}, and its $\F_q$-dimension is the sum in
+Proposition~\ref{prop:global-dimensions}.
+
+The notation of the paper is collected in Table~\ref{tab:nomenclature}; symbols
+are used only in the sense fixed there.
+
+\begin{table}[t]
+\centering
+\caption{Notation. All dimensions of global objects are over $\F_q$ and all
+dimensions of component objects over $K_s$.}\label{tab:nomenclature}
+\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+$q=p^{e}$, $n$, $k$ & base-field order, code length with $\gcd(n,p)=1$, and
+twist exponent with $0\le k<e$ \\
+$K_s=\F_{q^{m_s}}$, $d_s=em_s$ & component field and its absolute degree \\
+$m_s$, $\Fs$, $J_s$, $\mathscr C$ & extension degree, irreducible factors of
+$M_s=x^n-\lambda_s$, a labeled selection, the selection space \\
+$\sigma_{s,k}$, $\rho_{s,k}$ & $a\mapsto a^{p^{k}}$ and its inverse
+$a\mapsto a^{p^{d_s-k}}$ \\
+$\langle x,y\rangle_{s,k}$, $\Dk$ & $k$-Galois pairing and $k$-Galois dual \\
+$\A$ & square-free affine algebra, a labeled product of the $K_s$ \\
+$g_{J_s}$, $h_{J_s}$ & selected-factor generator of $C_s(J_s)$ and
+$M_s/g_{J_s}$ \\
+$\lambda_s^{1+p^{d_s-k}}=1$ & compatibility condition \eqref{eq:compat} \\
+$\tau_{s,k}$, $\Os$ & reciprocal factor permutation; its set of orbits
+(Definition~\ref{def:orbits}) \\
+$a_O$, $d_O$, $w_O=m_sd_O$ & orbit length, common factor degree, $\F_q$-weight \\
+$\varepsilon_{O,i}$, $b_O$ & selection indicator; cyclic $1$-to-$0$ count
+\eqref{eq:boundary} \\
+$T_w(u,z)$ & weighted transfer matrix (rows: source state, columns: destination
+state) \\
+$\kappa(C)$, $\eta_k(C)$ & $\F_q$-dimension of a code and of its $k$-Galois hull \\
+$\Epoly(u,z)$, $\mathcal H(z)$, $\Phi_j$ & joint enumerator, hull polynomial,
+and the coefficient sums of Corollary~\ref{cor:conditional} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{\texorpdfstring{$k$}{k}-Galois duality and hull structure}\label{sec:duality}
+
+We derive the $k$-Galois duals and hull supports of the component constacyclic
+codes. Three objects are constructed: the inverse-Frobenius reciprocal and its
+compatibility condition (\S\ref{sec:reciprocal}), the dual generator
+(\S\ref{sec:duals}), and the hull support as a cyclic boundary statistic on
+reciprocal orbits (\S\ref{sec:support}).
+
+\subsection{The inverse-Frobenius reciprocal and the compatibility condition}\label{sec:reciprocal}
+
+Let $f(x)=\sum_{i=0}^{r}f_i x^i$ be monic with $f_0\neq 0$. Define the normalized
+inverse-Frobenius reciprocal
+\begin{equation}\label{eq:reciprocal}
+f^{\#_{s,k}}(x)
+ =\rho_{s,k}(f_0)^{-1}
+   \sum_{i=0}^{r}\rho_{s,k}(f_i)x^{r-i}.
+\end{equation}
+
+\begin{lemma}[Normalized inverse-Frobenius reciprocal]\label{lem:reciprocal}
+The map $f\mapsto f^{\#_{s,k}}$ is monic, preserves degree and irreducibility, is
+multiplicative on monic polynomials with nonzero constant term, and is inverted
+by the corresponding normalized reciprocal using $\sigma_{s,k}$.
+\end{lemma}
+
+\begin{proof}
+The leading coefficient after reversal is $\rho_{s,k}(f_0)\ne0$, so the displayed
+normalization makes the reciprocal monic and of degree $r$. Its constant
+coefficient is $\rho_{s,k}(f_r)/\rho_{s,k}(f_0)=\rho_{s,k}(f_0)^{-1}\ne0$.
+Reversal satisfies $\operatorname{rev}(fg)=\operatorname{rev}(f)\operatorname{rev}(g)$,
+and the coefficient map $\rho_{s,k}$ is multiplicative; the two normalization
+factors also multiply, proving multiplicativity on monic polynomials.
+
+For the inverse, write $g=f^{\#_{s,k}}$ and apply the corresponding normalized
+reciprocal using $\sigma_{s,k}$. Since $g_0=\rho_{s,k}(f_0)^{-1}$, the inverse
+normalization is $\sigma_{s,k}(g_0)^{-1}=f_0$, and coefficient reversal returns
+$f$. The coefficient automorphism preserves irreducible factorizations, while
+ordinary reciprocal reversal sends a nontrivial factorization of a polynomial
+with nonzero constant term to a nontrivial factorization of its reciprocal. Thus
+irreducibility is preserved.
+\end{proof}
+
+\begin{lemma}[Root action]\label{lem:root-action}
+Let $f(x)=\sum_{i=0}^{r}f_ix^{i}\in K_s[x]$ be monic with $f_0\neq0$, let
+$L\supseteq K_s$ be a finite field containing a root $\alpha$ of $f$, and let
+$g=f^{\#_{s,k}}$ be as in \eqref{eq:reciprocal}. Then
+$g\bigl(\alpha^{-p^{d_s-k}}\bigr)=0$. Thus the induced root map is
+$\alpha\mapsto\alpha^{-p^{d_s-k}}$.
+\end{lemma}
+
+\begin{proof}
+Extend $\rho=\rho_{s,k}$ to $L$ by $\rho(a)=a^{p^{d_s-k}}$; this is a field
+automorphism of $L$ whose restriction to $K_s$ is $\rho_{s,k}$. Let
+$\sigma_L:=\rho^{-1}$ on $L$; its restriction to $K_s$ is
+$\sigma_{s,k}=\rho_{s,k}^{-1}$. For $y\in L$ put
+\[
+(\rho f)(y):=\rho\bigl(f(\sigma_L(y))\bigr)
+ =\sum_{i=0}^{r}\rho(f_i)\,\rho(\sigma_L(y))^{i}
+ =\sum_{i=0}^{r}\rho(f_i)\,y^{i},
+\]
+using that $\rho$ is a ring homomorphism. By \eqref{eq:reciprocal},
+\[
+g(x)=\rho(f_0)^{-1}\sum_{i=0}^{r}\rho(f_i)x^{r-i}
+ =\rho(f_0)^{-1}x^{r}\,(\rho f)(x^{-1}).
+\]
+Put $\beta=\rho(\alpha^{-1})=\alpha^{-p^{d_s-k}}$, which is nonzero since
+$f_0\ne0$ forces $\alpha\ne0$. Then $\beta^{-1}=\rho(\alpha)$, so
+$\sigma_L(\beta^{-1})=\alpha$, and
+\[
+g(\beta)=\rho(f_0)^{-1}\beta^{r}\,(\rho f)(\beta^{-1})
+ =\rho(f_0)^{-1}\beta^{r}\,\rho\bigl(f(\alpha)\bigr)=0.
+\]
+Finally, if $\alpha^{n}=\lambda_s$ then
+$\beta^{n}=\rho(\alpha^{n})^{-1}=\rho(\lambda_s)^{-1}=\lambda_s^{-p^{d_s-k}}$.
+\end{proof}
+
+If $\alpha^n=\lambda_s$, then
+\[
+\bigl(\alpha^{-p^{d_s-k}}\bigr)^n=\lambda_s^{-p^{d_s-k}} .
+\]
+Consequently, the reciprocal preserves the same factor set precisely under
+\begin{equation}\label{eq:compat}
+\lambda_s^{1+p^{d_s-k}}=1 .
+\end{equation}
+Under this condition, define
+\[
+\tau_{s,k}:\Fs\longrightarrow\Fs,
+\qquad
+\tau_{s,k}(f)=f^{\#_{s,k}} .
+\]
+The map $\tau_{s,k}$ is a permutation. It need not be an involution; fixed points
+and cycles of arbitrary admissible length are allowed.
+
+\begin{proposition}[Compatible factor permutation]\label{prop:compatible-permutation}
+Under $\lambda_s^{1+p^{d_s-k}}=1$, the map $\tau_{s,k}$ is a permutation of $\Fs$
+and preserves factor degrees. Its cycles therefore partition the labeled factor
+set into orbits with a common degree on each orbit.
+\end{proposition}
+
+\begin{proof}
+The root action of Lemma~\ref{lem:root-action} sends roots of $M_s$ to roots of
+the same polynomial under the displayed compatibility condition. By
+Lemma~\ref{lem:reciprocal}, the normalized reciprocal \eqref{eq:reciprocal}
+preserves monicity, irreducibility, and degree, and its inverse is obtained with
+$\sigma_{s,k}$; hence it permutes $\Fs$.
+\end{proof}
+
+\subsection{\texorpdfstring{$k$}{k}-Galois duals}\label{sec:duals}
+
+We first record the classical Euclidean dual of a constacyclic code, which is the
+starting point for the dual generator.
+
+\begin{lemma}[Ordinary constacyclic reciprocal]\label{lem:ordinary-reciprocal}
+Let $K$ be a finite field, $a\in K^*$, and $n\geq1$. Let $M(x)=x^n-a$, let
+$G\mid M$ be monic, and put $H=M/G$. If
+\[
+H^*(x)=H(0)^{-1}\sum_{i=0}^{\deg H}H_i x^{\deg H-i},
+\]
+then the Euclidean dual of the ideal $\langle G\rangle$ in
+$K[x]/\langle M\rangle$ is the ideal generated by $H^*$ in the
+$a^{-1}$-constacyclic quotient.
+\end{lemma}
+
+\begin{proof}
+Write $r=\deg G$ and $h=\deg H$, so $r+h=n$. For the non-wrapped generator shifts
+$x^iG$ and $x^jH^*$, with $0\leq i<h$ and $0\leq j<r$, the coefficient pairing
+is, up to the nonzero scalar $H(0)^{-1}$, the coefficient of degree $h-i+j$ in
+$GH=x^n-a$. Indeed, reversal changes the index from $u$ in $H$ to $h-u$ in $H^*$,
+so the aligned terms satisfy $u+v=h-i+j$. Since $1\leq h-i+j\leq n-1$, that
+coefficient is zero. These shifts therefore span mutually orthogonal spaces.
+
+The reciprocal identity
+\[
+H^*(x)=H(0)^{-1}x^hH(x^{-1})
+\]
+shows that $H^*$ divides the normalized reciprocal of $M=x^n-a$, namely
+$x^n-a^{-1}$. Hence its ideal is closed under the $a^{-1}$-constacyclic boundary
+shift; the non-wrapped shifts above form a basis of dimension $r$. This dimension
+equals the codimension of $\langle G\rangle$, so the orthogonal space is exactly
+the $a^{-1}$-constacyclic ideal generated by $H^*$.
+\end{proof}
+
+\begin{theorem}[$k$-Galois dual generator]\label{thm:dual-generator}
+Let $C_s(J_s)=\langle g_{J_s}\rangle$ be a component code and let
+$h_{J_s}=M_s/g_{J_s}$. Under the simple-root hypotheses, the $k$-Galois dual is
+generated by the normalized inverse-Frobenius reciprocal
+$h_{J_s}^{\#_{s,k}}$ and is constacyclic with twist
+\[
+\lambda_s^{-p^{d_s-k}} .
+\]
+If the compatibility condition holds, the set of irreducible factors in its
+generator is
+\[
+\tau_{s,k}(\Fs\setminus J_s).
+\]
+\end{theorem}
+
+\begin{proof}
+Proposition~\ref{prop:dual-translation} gives
+$\Dk(C_s)=\rho_{s,k}(C_s^{\perpE})$. By
+Lemma~\ref{lem:ordinary-reciprocal}, $C_s^{\perpE}$ is the
+$\lambda_s^{-1}$-constacyclic ideal generated by the ordinary normalized
+reciprocal $h_{J_s}^*$. Coordinatewise application of $\rho_{s,k}$ maps this
+ideal onto the ideal generated by
+$\rho_{s,k}(h_{J_s}^*)=h_{J_s}^{\#_{s,k}}$ in the quotient with twist
+$\rho_{s,k}(\lambda_s^{-1})=\lambda_s^{-p^{d_s-k}}$. This calculation remains
+valid without compatibility. When compatibility holds, multiplicativity and
+Lemma~\ref{lem:root-action} map the irreducible factors of $h_{J_s}$, namely
+$\Fs\setminus J_s$, onto $\tau_{s,k}(\Fs\setminus J_s)$; these are the selected
+factors in the dual generator.
+\end{proof}
+
+\begin{proposition}[Same-twist compatibility criterion]\label{prop:same-twist}
+The $k$-Galois dual twist equals the original twist precisely when
+\[
+\lambda_s^{-p^{d_s-k}}=\lambda_s,
+\qquad\text{equivalently}\qquad
+\lambda_s^{1+p^{d_s-k}}=1.
+\]
+If this condition fails, the $k$-Galois dual belongs to the transformed modulus
+\[
+x^n-\lambda_s^{-p^{d_s-k}},
+\]
+so the same-factor-set orbit product is not asserted.
+\end{proposition}
+
+\begin{proof}
+The first equality is the twist in Theorem~\ref{thm:dual-generator}. Multiplying
+it by $\lambda_s^{p^{d_s-k}}$ gives the equivalent displayed power condition. If
+it fails, the root calculation places the dual in the transformed constacyclic
+modulus rather than in the original same-factor-set quotient.
+\end{proof}
+
+\begin{remark}[Incompatible twists]\label{rem:incompatible}
+If $\lambda_s^{1+p^{d_s-k}}\neq1$, put $\mu_s=\lambda_s^{-p^{d_s-k}}\ne\lambda_s$.
+By Theorem~\ref{thm:dual-generator}, the dual generator $h_{J_s}^{\#_{s,k}}$
+divides $x^n-\mu_s$, whereas $g_{J_s}$ divides $x^n-\lambda_s$. The two moduli
+are coprime because their difference is the nonzero constant $\mu_s-\lambda_s$.
+Consequently the two generators are coprime, and their degrees sum to $n$. A
+vector in the hull, identified with a polynomial of degree less than $n$, must
+be divisible by both generators and hence by their product of degree $n$.
+Therefore
+\[
+\Hull_k(C_s(J_s))=\{0\}.
+\]
+Every such component code is $k$-Galois LCD. The same-factor-set permutation
+$\tau_{s,k}$ is unavailable in this case, so the orbit product of
+Theorem~\ref{thm:central} remains restricted to compatible twists.
+\end{remark}
+
+\begin{remark}[Dual convention]\label{rem:candidate}
+The pairing \eqref{eq:pairing} is code-first: the Frobenius is applied to the
+second argument. Some of the literature instead forms the dual with the
+candidate-first condition
+\[
+D_{\mathrm{cand}}(C)=\Bigl\{y:\ \sum_i y_i\,\sigma_{s,k}(c_i)=0\text{ for every }c\in C\Bigr\}.
+\]
+\textup{(a)} For any $K_s$-linear code, with no constacyclic hypothesis,
+\[
+\Dk(C)=\rho_{s,k}(C^{\perpE}),\qquad
+D_{\mathrm{cand}}(C)=\sigma_{s,k}(C^{\perpE}),
+\]
+and therefore
+\begin{equation}\label{eq:convention}
+D_{\mathrm{cand}}(C)=\sigma_{s,k}^{2}\bigl(\Dk(C)\bigr).
+\end{equation}
+The two dual subspaces are not generally equal.
+\emph{Proof.} The first relation is Proposition~\ref{prop:dual-translation}.
+For the candidate-first condition, substitute $y=\sigma_{s,k}(z)$: then
+$\sum_iy_i\sigma_{s,k}(c_i)=\sigma_{s,k}(\sum_iz_ic_i)$, which vanishes for every
+$c\in C$ exactly when $z\in C^{\perpE}$, giving
+$D_{\mathrm{cand}}(C)=\sigma_{s,k}(C^{\perpE})$. Applying $\sigma_{s,k}$ twice to
+the $k$-Galois relation gives \eqref{eq:convention}, since
+$\sigma_{s,k}^{2}(\rho_{s,k}(z))=\sigma_{s,k}(z)$. The two subspaces agree only
+when the square of the Frobenius happens to fix the dual subspace.
+
+\textup{(b)} \emph{(Same-code hull dimension only.)} Let $B$ be a row basis of a
+finite-field-linear code $C$ and let $G=B\,\sigma(B)^{\mathsf T}$. Then both
+same-code hull dimensions equal $\dim(C)-\rank(G)$. In particular, the
+$k$-Galois and candidate-first pairings give equal hull dimensions for the same
+code, and the same LCD decision. This does not identify the dual codes, hull
+subspaces, factor supports, or generator supports.
+\emph{Proof.} Write codewords as $vB$ with row vectors $v$. For the $k$-Galois
+hull, $y=vB$ lies in $\Dk(C)$ exactly when
+$uB\,\sigma(B)^{\mathsf T}\sigma(v)^{\mathsf T}=0$ for every $u$, that is,
+$G\,\sigma(v)^{\mathsf T}=0$. Since $\sigma$ is a coordinatewise field
+automorphism, $\sigma(v)$ ranges over all row vectors as $v$ does, so the
+$k$-Galois hull has dimension $\dim(C)-\rank(G)$ by rank-nullity. For the
+candidate-first hull, $y=vB$ lies in $D_{\mathrm{cand}}(C)$ exactly when
+$vB\,\sigma(B)^{\mathsf T}\sigma(u)^{\mathsf T}=0$ for every $u$, that is,
+$vG=0$; this left nullspace has the same dimension $\dim(C)-\rank(G)$. The LCD
+assertion is the case $\rank(G)=\dim(C)$.
+\end{remark}
+
+\subsection{Hull support and the cyclic boundary statistic}\label{sec:support}
+
+\begin{definition}[Orbit set]\label{def:orbits}
+Assume $\lambda_s^{1+p^{d_s-k}}=1$. The \emph{orbit set} $\Os$ is the set of
+cycles of the permutation $\tau_{s,k}$ of $\Fs$
+(Proposition~\ref{prop:compatible-permutation}). For $O\in\Os$ write
+$a_O=|O|$, let $d_O$ be the common $K_s$-degree of its factors, and list
+$O=\{f_{O,1},\dots,f_{O,a_O}\}$ so that
+$\tau_{s,k}(f_{O,i})=f_{O,i+1}$, indices modulo $a_O$. Thus
+$\Fs=\bigsqcup_{O\in\Os}O$.
+\end{definition}
+
+\begin{theorem}[Component hull support]\label{thm:hull-support}
+Let $C_s(J_s)$ be selected by $J_s\subseteq\Fs$. Under the compatible
+same-factor-set hypotheses, the $k$-Galois hull has factor support
+\begin{equation}\label{eq:support}
+\begin{aligned}
+\operatorname{Supp}_{\mathrm{CRT}}\bigl(\Hull_k(C_s(J_s))\bigr)
+ &= (\Fs\setminus J_s)\cap\tau_{s,k}(J_s)\\
+ &= \tau_{s,k}(J_s)\setminus J_s.
+\end{aligned}
+\end{equation}
+The first line is the direct lcm/intersection form, and the second uses that
+$\tau_{s,k}$ is a permutation of $\Fs$.
+\end{theorem}
+
+\begin{proof}
+The code generator has support $J_s$, while the dual generator has support
+$\tau_{s,k}(\Fs\setminus J_s)$. The intersection of the two principal ideals in
+the square-free quotient is generated by the least common multiple, so its
+surviving factors are the complement of the union of these two supports. This
+gives
+$(\Fs\setminus J_s)\cap(\Fs\setminus\tau_{s,k}(\Fs\setminus J_s))$.
+Since $\tau_{s,k}$ is a permutation, the second complement is $\tau_{s,k}(J_s)$,
+giving the two displayed forms.
+\end{proof}
+
+\begin{proposition}[Weighted cyclic boundary statistic]\label{prop:boundary}
+For a labeled selection $J=(J_s)_s$ and its global code $C(J)$, let $O\in\Os$ be
+indexed as in Definition~\ref{def:orbits}. All factors in $O$ have a common
+degree $d_O$. Put
+\[
+w_O=m_s d_O,
+\qquad
+\varepsilon_{O,i}=\begin{cases}1,&f_{O,i}\in J_s,\\0,&f_{O,i}\notin J_s,\end{cases}
+\]
+following the selection convention of \S\ref{sec:selections}; when the orbit is
+clear we write $\varepsilon_i=\varepsilon_{O,i}$. Then
+\begin{equation}\label{eq:boundary}
+b_O(\varepsilon)=\sum_{i=1}^{a_O}\varepsilon_i(1-\varepsilon_{i+1})
+\end{equation}
+and
+\begin{equation}\label{eq:hull-dim}
+\dim_{\F_q}\Hull_{\A,k}(C(J))
+ =\sum_{s=1}^{N}\sum_{O\in\Os}w_O b_O(\varepsilon_O).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The orbit positions have equal factor degree because the reciprocal permutation
+of Proposition~\ref{prop:compatible-permutation} preserves degree. The support
+formula \eqref{eq:support} identifies a hull factor at position $i+1$ exactly
+when $f_i$ is selected and $f_{i+1}$ is not. Each such factor contributes
+$m_s d_O=w_O$ to the global $\F_q$ dimension, and summing over the orbit
+partition gives the formula.
+\end{proof}
+
+\begin{proposition}[Component lcm--boundary bridge]\label{prop:lcm-bridge}
+Under the compatible simple-root assumptions, write $g_s=g_{J_s}$,
+$h_s=M_s/g_s$, and take the normalized $k$-Galois reciprocal
+$h_s^{\#_{s,k}}$. Then the global $\F_q$-dimension satisfies
+\begin{equation}\label{eq:lcm-bridge}
+\begin{aligned}
+\dim_{\F_q}\Hull_{\A,k}(C(J))
+ &=\sum_{s=1}^{N}m_s\bigl(n-\deg\operatorname{lcm}(g_s,h_s^{\#_{s,k}})\bigr)\\
+ &=\sum_{s,O}w_O\sum_i\varepsilon_{O,i}(1-\varepsilon_{O,i+1}).
+\end{aligned}
+\end{equation}
+The factor $m_s$ is necessary when $K_s\ne\F_q$; replacing the first sum by a
+single unweighted $n-\deg\operatorname{lcm}$ is generally incorrect.
+\end{proposition}
+
+\begin{proof}
+In the square-free component modulus, the selected-factor exponent in $g_s$ is
+$\varepsilon_f$, and that in the dual generator at $f$ is
+$1-\varepsilon_{\tau_{s,k}^{-1}(f)}$. Therefore the lcm contains $f$ with
+exponent $\max\{\varepsilon_f,1-\varepsilon_{\tau^{-1}(f)}\}$. Subtracting its
+degree from $n=\sum_{f\in\Fs}\deg f$ leaves the factor weight
+$\deg f\,\varepsilon_{\tau^{-1}(f)}(1-\varepsilon_f)$. Multiply by $m_s$, sum
+over all components, and index each orbit in the forward direction
+$\tau(f_i)=f_{i+1}$. This gives the second expression. The first expression is
+the usual degree formula for an intersection of principal ideals over each $K_s$,
+followed by extension-degree conversion. The weight $m_s=[K_s:\F_q]$ converts
+each component $K_s$-dimension to an $\F_q$-dimension; it is essential whenever
+$K_s\ne\F_q$, for instance in the $\F_4\times\F_{16}$ product of
+\S\ref{sec:examples}, where the second component's hull dimensions double.
+\end{proof}
+
+The subfamily of \cite{debnathAffine2026} that overlaps the setting above is
+$m_s=1$, $0\le k<e$, $\gcd(\operatorname{ord}(\lambda_s),n)=1$ and
+$\operatorname{ord}(\lambda_s)\mid(1+p^{e-k})$. There, the hull dimension is
+expressed by factor multiplicities $u_i$ and terms
+$\max\{u_i,p^{e'}-u_{i-1}\}$, under the additional hypotheses $n=n'p^{e'}$,
+$\gcd(n',p)=1$, $\gcd(\operatorname{ord}(\lambda),n')=1$ and
+$\operatorname{ord}(\lambda)\mid(1+p^{e-k})$; the formula is Thm.~8 of the
+preprint version (\href{https://arxiv.org/abs/2412.08512v1}{arXiv:2412.08512v1})
+of \cite{debnathAffine2026}. At $e'=0$ the multiplicities are binary,
+$u_i=\varepsilon_i\in\{0,1\}$, and the contribution complementary to each maximum
+is
+\[
+1-\max\{\varepsilon_i,1-\varepsilon_{i-1}\}
+ =\varepsilon_{i-1}(1-\varepsilon_i).
+\]
+After matching the factor order and degrees, this is precisely the corresponding
+summand in \eqref{eq:lcm-bridge}, so the two descriptions agree on this
+binary-max specialization on matched factor orderings. The present theorem
+imposes no coprimality between $n$ and the order of the twist. The comparison
+does not identify the candidate-first and $k$-Galois dual subspaces; their
+same-code hull dimensions can be compared through Remark~\ref{rem:candidate}(b).
+
+\begin{proposition}[Cyclic boundary interpretation]\label{prop:boundary-interpretation}
+For a nonconstant cyclic binary word, the statistic $b_O$ of \eqref{eq:boundary}
+equals the number of one-runs and also the number of zero-runs. It is the number
+of directed $1$-to-$0$ transitions, with cyclic indexing modulo $a_O$.
+\end{proposition}
+
+\begin{proof}
+Each summand is one exactly when the directed edge from $i$ to $i+1$ is a
+$1$-to-$0$ transition. Every one-run has exactly one such exit and every zero-run
+has exactly one entry, so these counts agree. The two constant words have
+$b_O=0$.
+\end{proof}
+
+Figure~\ref{fig:orbit} illustrates one orbit with its selection word: the two
+thick $1$-to-$0$ arrows are exactly the transitions counted by
+\eqref{eq:boundary}.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[>=stealth, box/.style={draw, minimum width=1.2cm,
+  minimum height=1.0cm, align=center, inner sep=1.2pt}]
+\node[box] (f0) at (0,0) {$f_{1}$\\$\varepsilon_{1}=1$};
+\node[box] (f1) at (1.82,0) {$f_{2}$\\$\varepsilon_{2}=1$};
+\node[box] (f2) at (3.64,0) {$f_{3}$\\$\varepsilon_{3}=0$};
+\node[box] (f3) at (5.46,0) {$f_{4}$\\$\varepsilon_{4}=1$};
+\node[box] (f4) at (7.28,0) {$f_{5}$\\$\varepsilon_{5}=0$};
+\node[box] (f5) at (9.10,0) {$f_{6}$\\$\varepsilon_{6}=0$};
+\draw[->] (f0) -- node[above] {\footnotesize$\tau$} (f1);
+\draw[->, ultra thick] (f1) -- (f2);
+\draw[->] (f2) -- (f3);
+\draw[->, ultra thick] (f3) -- (f4);
+\draw[->] (f4) -- (f5);
+\draw[->] (f5.south) -- ++(0,-0.5) -| node[below, near start]
+  {\footnotesize$\tau$} (f0.south);
+\node[font=\small, align=center] at (4.55,-1.8) {thick arrows: the
+  $1$-to-$0$ transitions, so $b_O=2$ and the hull contribution is $2w_O$};
+\end{tikzpicture}
+\caption{One reciprocal orbit $O$ of length $a_O=6$, with factors
+$f_{O,1},\dots,f_{O,6}$ written $f_1,\dots,f_6$ and selection word
+$\varepsilon=110100$. The arrows follow $\tau=\tau_{s,k}$; the two thick arrows
+are the $1$-to-$0$ transitions counted by \eqref{eq:boundary}, and each of them
+contributes one factor of $K_s$-degree $d_O$, hence $w_O=m_sd_O$ to the global
+$\F_q$-hull dimension by \eqref{eq:hull-dim}.}
+\label{fig:orbit}
+\end{figure}
+
+\section{Exact joint enumeration}\label{sec:enumeration}
+
+By Theorem~\ref{thm:hull-support} and Proposition~\ref{prop:boundary}, both
+statistics of interest are additive over reciprocal orbits. The code dimension
+counts the unselected factors, weighted by $w_O$; the $k$-Galois hull dimension
+counts the $1$-to-$0$ transitions of the selection word, again weighted by $w_O$.
+The labeled selections therefore factorize over orbits, and the joint enumerator
+is a product of independent one-orbit polynomials. This section
+computes those polynomials in two equivalent ways
+(\S\S\ref{sec:orbit}--\ref{sec:transfer}), assembles the global enumerator
+(\S\ref{sec:global}), records its consequences (\S\ref{sec:consequences}) and
+describes the exact coefficient computation (\S\ref{sec:algorithm}).
+
+\subsection{The one-orbit polynomial}\label{sec:orbit}
+
+\begin{proposition}[One-orbit polynomial]\label{prop:orbit-poly}
+For an orbit of length $a\geq1$ and positive integer weight $w$, let
+$P_{a,w}(z)$ be the sum of $z^{wb(\varepsilon)}$ over all indexed cyclic binary
+words. For $1\leq r\leq\lfloor a/2\rfloor$,
+\[
+N(a,r)=2\binom{a}{2r}
+ =\frac{a}{r}\binom{a-1}{2r-1}
+\]
+counts the nonconstant words with $r$ one-runs, and
+\begin{equation}\label{eq:orbit-poly}
+P_{a,w}(z)=2+
+ \sum_{r=1}^{\lfloor a/2\rfloor}
+ 2\binom{a}{2r}z^{rw}
+ =2+
+ \sum_{r=1}^{\lfloor a/2\rfloor}
+ \frac{a}{r}\binom{a-1}{2r-1}z^{rw}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The two constant words contribute $2$. By
+Proposition~\ref{prop:boundary-interpretation}, a nonconstant word with $r$
+one-runs has $2r$ transition edges. Choosing the $2r$ transition edges and one of
+the two starting values gives $2\binom{a}{2r}$. The equality with the composition
+form follows from $2\binom{a}{2r}=(a/r)\binom{a-1}{2r-1}$, so the second
+expression is integral because it equals the first.
+\end{proof}
+
+For example,
+\[
+P_{1,w}(z)=2,\quad
+P_{2,w}(z)=2+2z^w,\quad
+P_{3,w}(z)=2+6z^w,
+\]
+\[
+P_{4,w}(z)=2+12z^w+2z^{2w},\qquad
+P_{5,w}(z)=2+20z^w+10z^{2w}.
+\]
+At $a=4$, for instance, there are two constant words, twelve words with one
+one-run, and two alternating words with two one-runs. At $z=1$ the binomial
+identity gives $P_{a,w}(1)=2^a$, as required for the $2^a$ indexed factor
+selections on one orbit.
+
+\subsection{Transfer matrices and the closed form}\label{sec:transfer}
+
+The one-orbit polynomial admits a two-state transfer-matrix representation, whose
+trace enumerates the closed walks that encode the cyclic words, and the closed
+form \eqref{eq:orbit-poly}, which exhibits the coefficients directly. The two are
+used for different purposes: the transfer matrix gives the uniform recursion of
+\S\ref{sec:algorithm}, whereas \eqref{eq:orbit-poly} gives each coefficient in
+closed binomial form.
+
+\begin{proposition}[Weighted transfer matrix]\label{prop:transfer-matrix}
+For a transition from source state $r=\varepsilon_i$ to destination state
+$t=\varepsilon_{i+1}$, assign
+\[
+T_w(u,z)_{r,t}=u^{w(1-t)}z^{wr(1-t)}.
+\]
+With states ordered as $0,1$, this is
+\begin{equation}\label{eq:transfer}
+T_w(u,z)=\begin{pmatrix}u^w&1\\u^wz^w&1\end{pmatrix}.
+\end{equation}
+The destination weight is deliberate: each factor is counted once as the
+destination of the preceding edge. Thus $u$ records code dimension, because a
+factor with destination state $t=0$ is not selected and contributes $w$ to the
+code dimension. The factor $z^w$ appears precisely on a $1$-to-$0$ edge.
+\end{proposition}
+
+\begin{proof}
+The four source/destination choices $(r,t)\in\{0,1\}^2$ receive the destination
+code-dimension weight $u^{w(1-t)}$ and the boundary weight $z^{wr(1-t)}$. This
+gives the displayed matrix in the state order $0,1$.
+\end{proof}
+
+For illustration, the bivariate short-orbit traces are
+\[
+\operatorname{tr}(T_w(u,z))=1+u^w,\qquad
+\operatorname{tr}(T_w(u,z)^2)=1+u^{2w}+2u^wz^w.
+\]
+A one-factor orbit never contributes a hull boundary; for length two, the two
+mixed selections each contribute one boundary, not two.
+
+\begin{proposition}[Local trace identity]\label{prop:trace}
+With $T_w(u,z)$ as in Proposition~\ref{prop:transfer-matrix}, for an orbit of
+length $a$ and weight $w$,
+\begin{equation}\label{eq:trace}
+\operatorname{tr}(T_w(u,z)^a)
+ =\sum_{\varepsilon\in\{0,1\}^a}
+ u^{w\sum_i(1-\varepsilon_i)}z^{w\sum_i\varepsilon_i(1-\varepsilon_{i+1})}.
+\end{equation}
+In particular,
+\[
+\operatorname{tr}(T_w(1,z)^a)=P_{a,w}(z).
+\]
+\end{proposition}
+
+\begin{proof}
+Expand a diagonal entry of $T_w^a$ in \eqref{eq:transfer} as a sum over
+intermediate states. The diagonal condition identifies the terminal state with
+the initial state, thereby closing the cycle. Summing the two diagonal entries
+sums over every indexed binary word exactly once. The product of edge weights is
+\[
+\prod_i u^{w(1-\varepsilon_{i+1})}z^{w\varepsilon_i(1-\varepsilon_{i+1})},
+\]
+which is the displayed monomial after cyclic reindexing.
+\end{proof}
+
+\begin{proposition}[Closed form of the one-orbit trace]\label{prop:closed}
+For an orbit of length $a\ge1$ and positive integer weight $w$, and for
+$1\le j\le a-1$ and $1\le r\le\min\{j,a-j\}$, the number of indexed cyclic binary
+words $\varepsilon\in\{0,1\}^{a}$ with exactly $j$ zeros (unselected factors) and
+exactly $r$ one-runs is
+\[
+N(a;j,r)=\frac{a}{r}\binom{j-1}{r-1}\binom{a-j-1}{r-1}.
+\]
+Consequently
+\[
+\operatorname{tr}\bigl(T_w(u,z)^{a}\bigr)
+ =1+u^{wa}+\sum_{j=1}^{a-1}\sum_{r=1}^{\min\{j,a-j\}}
+ \frac{a}{r}\binom{j-1}{r-1}\binom{a-j-1}{r-1}\,u^{wj}z^{wr}.
+\]
+\end{proposition}
+
+\begin{proof}
+\emph{Double counting.} Fix $1\le j\le a-1$, so $\varepsilon$ is not constant,
+and fix $1\le r\le\min\{j,a-j\}$. Each of the $r$ one-runs and $r$ zero-runs has
+positive length, so no such words exist for larger $r$. Call $i\in\mathbb{Z}/a$ a
+\emph{run start} of $\varepsilon$ if $\varepsilon_i=1$ and $\varepsilon_{i-1}=0$.
+Each one-run of a nonconstant cyclic word has exactly one run start, so a word
+with $r$ one-runs has exactly $r$ run starts. Let $\mathcal{P}$ be the set of
+pairs $(\varepsilon,i)$ where $\varepsilon$ has $j$ zeros and $r$ one-runs and $i$
+is a run start of $\varepsilon$. Then $|\mathcal{P}|=r\,N(a;j,r)$.
+
+\emph{Bijection.} Send $(\varepsilon,i)$ to $(i,v)$ with
+$v=(\varepsilon_i,\varepsilon_{i+1},\dots,\varepsilon_{i+a-1})$, the word read
+linearly from position $i$. Then $v$ starts with $1$ (as $\varepsilon_i=1$) and
+ends with $0$ (as $\varepsilon_{i-1}=0$). Hence $v$ is a linear word consisting of
+$2r$ maximal runs alternating $1,0,1,0,\dots,1,0$: $r$ one-runs with total length
+$a-j$ and $r$ zero-runs with total length $j$. (The cyclic runs of $\varepsilon$
+are exactly the linear runs of $v$, because the cut between positions $i-1$ and
+$i$ lies at a $0\to1$ transition.) Conversely, any pair $(i,v)$ with
+$i\in\mathbb{Z}/a$ and $v$ of this shape gives, by placing $v$ cyclically starting
+at position $i$, a word with $j$ zeros, $r$ one-runs and run start $i$. The two
+maps are mutually inverse. Such words $v$ correspond to an ordered composition of
+$a-j$ into $r$ positive parts and an ordered composition of $j$ into $r$ positive
+parts, so their number is $\binom{a-j-1}{r-1}\binom{j-1}{r-1}$. Therefore
+\[
+r\,N(a;j,r)=|\mathcal{P}|=a\binom{j-1}{r-1}\binom{a-j-1}{r-1},
+\]
+which gives the formula.
+
+\emph{Trace.} By Proposition~\ref{prop:trace}, $\operatorname{tr}(T_w^{a})$ is
+the sum over $\varepsilon\in\{0,1\}^{a}$ of
+$u^{w\cdot\#\{i:\varepsilon_i=0\}}\allowbreak z^{w\,b(\varepsilon)}$. By
+Proposition~\ref{prop:boundary-interpretation}, $b(\varepsilon)$ is the number of
+one-runs of a nonconstant word. The all-zero word gives $u^{wa}z^{0}$ and the
+all-one word gives $u^{0}z^{0}=1$. Grouping the nonconstant words by $(j,r)$ gives
+the stated sum.
+\end{proof}
+
+\begin{remark}
+Summing over $j$ at fixed $r$ recovers $N(a,r)=2\binom{a}{2r}$, because both count
+the words with $r$ one-runs (Proposition~\ref{prop:orbit-poly}).
+\end{remark}
+
+\subsection{The global joint enumerator}\label{sec:global}
+
+It remains to multiply the orbit factors. The variable $u$ carries the exponent
+$\kappa$ of the global code dimension and $z$ the exponent $\eta_k$ of the
+$k$-Galois hull dimension. A factor of $K_s$-degree $d_O$ on an orbit of the
+component $K_s$ contributes the weight $w_O=m_sd_O$ to both exponents. A labeled
+selection is an independent choice of a binary word on each reciprocal orbit,
+and both statistics are sums of the corresponding orbit contributions; hence the
+bivariate generating polynomial of the population $(\kappa,\eta_k)$ is the
+product of the one-orbit traces.
+
+\begin{keyresult}
+\begin{theorem}[Exact labeled joint $(\kappa,\eta)$-enumerator]\label{thm:central}
+Under the standing hypotheses of Sections~\ref{sec:setting} and~\ref{sec:duality},
+with the orbit notation of Definition~\ref{def:orbits} and
+\S\S\ref{sec:orbit}--\ref{sec:transfer}, let
+\[
+\A\cong\prod_{s=1}^{N}K_s,\qquad K_s=\F_{q^{m_s}},\qquad
+\lambda=(\lambda_s)_s\in\A^{*},
+\]
+with $q=p^{e}$, $d_s=em_s$, $0\le k<e$, $\gcd(n,p)=1$ (so every $M_s$ has simple
+roots), fixed component labels, $\lambda$-constacyclic codes over $\A$ in the
+sense of Definition~\ref{def:constacyclic-A}, and
+\[
+\lambda_s^{1+p^{d_s-k}}=1\qquad(1\le s\le N).
+\]
+For a labeled factor selection $J=(J_s)_s$, the global code is the CRT product
+\[
+C(J)=\prod_{s=1}^{N}C_s(J_s)\subseteq\A^{n},
+\]
+and its global $k$-Galois dual and hull are defined by the $\A$-valued pairing of
+Lemma~\ref{lem:global-pairing}:
+\[
+\begin{gathered}
+D_{\A,k}(C(J))=\{y:\langle c,y\rangle_{\A,k}=0_{\A}\ \text{for every } c\in C(J)\},
+\\
+\Hull_{\A,k}(C(J))=C(J)\cap D_{\A,k}(C(J)).
+\end{gathered}
+\]
+For every orbit $O\in\Os$, let $a_O$ be its length, let $d_O$ be its common factor
+degree, and put $w_O=m_sd_O$. With $\varepsilon_{O,i}$ as in
+Proposition~\ref{prop:boundary}, set
+\begin{equation}\label{eq:KH}
+\begin{aligned}
+\kappa(C(J)) &:= \dim_{\F_q}C(J)
+ =\sum_{s,O,i}w_O(1-\varepsilon_{O,i}),\\
+\eta_k(C(J)) &:= \dim_{\F_q}\Hull_{\A,k}(C(J))
+ =\sum_{s,O,i}w_O\,\varepsilon_{O,i}(1-\varepsilon_{O,i+1}).
+\end{aligned}
+\end{equation}
+With
+\[
+T_w(u,z)=\begin{pmatrix}u^{w}&1\\ u^{w}z^{w}&1\end{pmatrix},
+\]
+the exact joint generating polynomial is
+\begin{equation}\label{eq:joint}
+\begin{aligned}
+\Epoly(u,z)
+ &=\sum_{J\in\mathscr C}u^{\kappa(C(J))}z^{\eta_k(C(J))}\\
+ &=\prod_{s=1}^{N}\prod_{O\in\Os}
+ \operatorname{tr}\bigl(T_{w_O}(u,z)^{a_O}\bigr).
+\end{aligned}
+\end{equation}
+For every pair $(\kappa,\eta)$ of \eqref{eq:KH}, $[u^{\kappa}z^{\eta}]\,\Epoly(u,z)$
+is the number of $\lambda$-constacyclic codes $C\subseteq\A^{n}$ (equivalently, by
+Lemmas~\ref{lem:complete} and~\ref{lem:global-code}, of labeled factor selections
+$J\in\mathscr C$) with global $\F_q$-code dimension $\kappa$ and global
+$k$-Galois $\F_q$-hull dimension $\eta$.
+\end{theorem}
+\end{keyresult}
+
+\begin{proof}
+\emph{Product structure.} By Lemma~\ref{lem:factor-selection}, a labeled
+selection is a tuple $J=(J_s)_s$ with $J_s\subseteq\Fs$ arbitrary, so
+$\mathscr C=\prod_s 2^{\Fs}$. By Proposition~\ref{prop:compatible-permutation},
+under $\lambda_s^{1+p^{d_s-k}}=1$ the permutation $\tau_{s,k}$ partitions each
+$\Fs$ into its orbits $O\in\Os$. With each orbit listed as in
+Definition~\ref{def:orbits}, a subset $J_s\subseteq\Fs$ is the same as a family of
+binary words $(\varepsilon_{O,i})_{i=1}^{a_O}$, one for each $O\in\Os$. Hence
+\[
+\mathscr C\;\cong\;\prod_{s=1}^{N}\prod_{O\in\Os}\{0,1\}^{a_O},
+\]
+and the word on each reciprocal-factor orbit is an independent coordinate.
+
+\emph{Additivity.} Lemmas~\ref{lem:global-dual} and~\ref{lem:global-hull}
+identify the global dual and hull with the products of the component duals and
+hulls. Proposition~\ref{prop:global-dimensions} converts component dimensions to
+global $\F_q$-dimensions with the weights $w_O=m_sd_O$. Hence both statistics in
+\eqref{eq:KH} are sums over orbits: $\kappa$ by
+Lemma~\ref{lem:factor-selection}, and $\eta_k$ by
+Theorem~\ref{thm:hull-support} with Proposition~\ref{prop:boundary}.
+
+\emph{Counting.} Proposition~\ref{prop:trace} enumerates each orbit coordinate
+with its code-dimension and hull-dimension weights. A product of generating
+polynomials convolves independent additive statistics, so the coefficient of
+$u^{\kappa}z^{\eta}$ in the orbit-trace product counts exactly the tuples of orbit
+words with total weights $(\kappa,\eta)$.
+
+\emph{From selections to codes.} By Lemma~\ref{lem:global-code} (injectivity),
+distinct tuples give distinct codes. By Lemma~\ref{lem:complete} (surjectivity),
+every $\lambda$-constacyclic code over $\A$ arises from some tuple. So the
+coefficient counts $\lambda$-constacyclic codes over $\A$ with parameters
+$(\kappa,\eta)$.
+\end{proof}
+
+\subsection{Consequences}\label{sec:consequences}
+
+Specialising \eqref{eq:joint} yields the marginal distributions, the LCD count and
+the moments of the hull dimension, and differentiating it at fixed code dimension
+yields the conditional hull statistics.
+
+\begin{corollary}\label{cor:total}
+The total number of $\lambda$-constacyclic codes of length $n$ over $\A$ is
+\[
+\Epoly(1,1)=2^{\sum_s|\Fs|}.
+\]
+\end{corollary}
+
+\begin{proof}
+At $u=z=1$, each local trace \eqref{eq:trace} counts the $2^{a_O}$ indexed binary
+words on its orbit. Multiplying over the orbit partition gives
+$2^{\sum_s|\Fs|}$. The same number follows directly from the bijection
+$J\mapsto C(J)$ of Lemmas~\ref{lem:complete} and~\ref{lem:global-code} and
+$|\mathscr C|=2^{\sum_s|\Fs|}$. (This count uses only
+Lemma~\ref{lem:factor-selection} and does not need the compatibility condition.)
+\end{proof}
+
+\begin{corollary}[Code-dimension distribution]\label{cor:code-dist}
+Setting $z=1$ removes the hull marking and yields
+\begin{equation}\label{eq:dimdist}
+\Epoly(u,1)=\prod_{s=1}^{N}\prod_{f\in\Fs}
+\left(1+u^{m_s\deg(f)}\right).
+\end{equation}
+Thus $[u^{\kappa}]\Epoly(u,1)$ counts labeled codes of global code dimension
+$\kappa$. This is a marginal distribution.
+\end{corollary}
+
+\begin{proof}
+Each factor is either unselected, contributing its full global dimension weight,
+or selected, contributing no code-dimension weight. The factor-selection bijection
+and independence give the product.
+\end{proof}
+
+\begin{corollary}[Hull-dimension distribution]\label{cor:hull-dist}
+The exact hull polynomial is
+\begin{equation}\label{eq:hull-dist}
+\mathcal H(z)=\Epoly(1,z)
+ =\prod_{s=1}^{N}\prod_{O\in\Os}P_{a_O,w_O}(z).
+\end{equation}
+Consequently, $[z^{\eta}]\,\mathcal H(z)$ counts labeled codes with $k$-Galois
+hull dimension $\eta$.
+\end{corollary}
+
+\begin{proof}
+Set $u=1$ in Theorem~\ref{thm:central} and use
+Propositions~\ref{prop:orbit-poly} and~\ref{prop:trace}.
+\end{proof}
+
+\begin{corollary}[LCD count]\label{cor:lcd}
+All orbit weights are positive. Hence the hull dimension is zero exactly when
+every orbit has $b_O=0$. A cyclic binary word has no $1$-to-$0$ transition exactly
+when it is constant, so each orbit has two LCD selections. Therefore
+\begin{equation}\label{eq:lcd}
+\#\{C:\eta_k(C)=0\}=2^{\sum_s|\Os|}.
+\end{equation}
+This is a labeled LCD count.
+\end{corollary}
+
+\begin{proof}
+The zero-boundary cyclic words are exactly the two constant words on each orbit.
+Independence over the orbit partition gives the displayed product.
+\end{proof}
+
+For the moment statements, equip the finite labeled selection space
+$\mathscr C$ with the uniform probability measure
+\[
+\mathbb P(C(J))=\frac{1}{\Epoly(1,1)}
+ =2^{-\sum_s|\Fs|}
+ \qquad(J\in\mathscr C).
+\]
+Thus every distinct labeled factor-selection code has equal probability.
+
+\begin{corollary}[Mean hull dimension]\label{cor:mean}
+Under this uniform measure, for an orbit of length $a\geq2$, the indicator
+$X_i=\varepsilon_i(1-\varepsilon_{i+1})$ has expectation $1/4$, while a length-one
+orbit contributes zero. Independence across orbits gives
+\begin{equation}\label{eq:mean}
+\mathbb E[\eta_k]
+ =\sum_{s,O:\,a_O\geq2}\frac{a_Ow_O}{4}.
+\end{equation}
+Equivalently, the same value is obtained by differentiating the normalized hull
+polynomial at $z=1$.
+\end{corollary}
+
+\begin{proof}
+Sum the expectations of the directed boundary indicators over every orbit and
+multiply by its weight. The length-one case has no directed boundary.
+\end{proof}
+
+\begin{corollary}[Variance of hull dimension]\label{cor:variance}
+Under the same uniform measure, for $a\geq3$, neighboring directed-edge
+indicators have covariance $-1/16$ and nonneighboring indicators have covariance
+zero. Thus an orbit of length $a\geq3$ contributes $aw^2/16$. For $a=2$, the two
+directed boundary indicators are mutually exclusive and the orbit contribution is
+$w$ times a $\mathrm{Bernoulli}(1/2)$ variable, with variance $w^2/4$. A
+length-one orbit contributes zero. Therefore
+\begin{equation}\label{eq:var}
+\operatorname{Var}(\eta_k)
+ =\sum_{s,O:\,a_O=2}\frac{w_O^2}{4}
+  +\sum_{s,O:\,a_O\geq3}\frac{a_Ow_O^2}{16}.
+\end{equation}
+The separate $a=2$ term is essential.
+\end{corollary}
+
+\begin{proof}
+Under the uniform measure on $\mathscr C$ the indicators
+$\varepsilon_{O,i}$ are independent $\mathrm{Bernoulli}(1/2)$ variables, because
+$\mathscr C\cong\prod_{s,O}\{0,1\}^{a_O}$ (proof of
+Theorem~\ref{thm:central}). Fix an orbit of length $a$ and weight $w$, and put
+$X_i=\varepsilon_{O,i}(1-\varepsilon_{O,i+1})$ with indices modulo $a$. Its
+contribution to $\eta_k$ is $w\sum_{i}X_i$.
+
+\emph{Variances.} For an orbit of length at least two, $X_i$ is an indicator with
+$\Pr(X_i=1)=1/4$, so $\operatorname{Var}X_i=\tfrac14-\tfrac1{16}=\tfrac3{16}$.
+
+\emph{Case $a\ge3$.} Adjacent indicators satisfy
+$X_iX_{i+1}=\varepsilon_{O,i}(1-\varepsilon_{O,i+1})\varepsilon_{O,i+1}(1-\varepsilon_{O,i+2})=0$,
+hence $\operatorname{Cov}(X_i,X_{i+1})=0-\tfrac1{16}=-\tfrac1{16}$. If $X_i$ and
+$X_j$ are not adjacent, i.e.\ $\{i,i+1\}\cap\{j,j+1\}=\emptyset$, they are
+functions of disjoint sets of independent variables and hence independent. (For
+$a=3$ every two distinct indicators are adjacent, so this case is empty.) Since
+$a\ge3$, each $i$ has exactly two distinct neighbors $i\pm1$, so there are $2a$
+ordered adjacent pairs. Therefore
+\[
+\operatorname{Var}\Bigl(\sum_i X_i\Bigr)
+ = a\cdot\tfrac3{16}+2a\cdot\bigl(-\tfrac1{16}\bigr)
+ = a\Bigl(\tfrac3{16}-\tfrac2{16}\Bigr)=\tfrac{a}{16},
+\]
+and the orbit contributes $a w^{2}/16$.
+
+\emph{Case $a=2$.} Here $X_1=\varepsilon_{O,1}(1-\varepsilon_{O,2})$ and
+$X_2=\varepsilon_{O,2}(1-\varepsilon_{O,1})$ are mutually exclusive, and
+$X_1+X_2=1$ exactly when $\varepsilon_{O,1}\ne\varepsilon_{O,2}$. So $X_1+X_2$ is
+$\mathrm{Bernoulli}(1/2)$ with variance $1/4$, and the weighted contribution is
+$w^{2}/4$.
+
+\emph{Case $a=1$.} $X_1=\varepsilon_{O,1}(1-\varepsilon_{O,1})=0$.
+
+Distinct orbits involve disjoint independent variables, so their contributions are
+independent and the variances add, giving \eqref{eq:var}.
+\end{proof}
+
+\begin{corollary}[Dimension-conditioned hull statistics]\label{cor:conditional}
+For an integer $\kappa$ and $j\in\{0,1,2\}$ put
+\[
+\Phi_j(\kappa)=\sum_{\eta}\eta(\eta-1)\cdots(\eta-j+1)\,
+ [u^{\kappa}z^{\eta}]\,\Epoly(u,z)
+ =[u^{\kappa}]\,\frac{\partial^{j}\Epoly(u,z)}{\partial z^{j}}\Big|_{z=1},
+\]
+so that $\Phi_0(\kappa)=[u^{\kappa}]\,\Epoly(u,1)$ (empty product $=1$). Call
+$\kappa$ attainable if $\Phi_0(\kappa)>0$. Under the uniform measure on labeled
+selections of code dimension $\kappa$,
+\begin{equation}\label{eq:conditional}
+\Pr(\eta_k=\eta\mid\kappa(C)=\kappa)
+ =\frac{[u^{\kappa}z^{\eta}]\,\Epoly(u,z)}{\Phi_0(\kappa)},\qquad
+\mathbb E[\eta_k\mid\kappa(C)=\kappa]=\frac{\Phi_1(\kappa)}{\Phi_0(\kappa)}.
+\end{equation}
+These ratios are undefined when $\Phi_0(\kappa)=0$.
+\end{corollary}
+
+\begin{proof}
+The denominator counts the $\Phi_0(\kappa)$ distinct labeled codes in the
+conditioning event by Theorem~\ref{thm:central}. Its numerator counts those with
+hull dimension $\eta$. Differentiating a monomial $z^{\eta}$ at $z=1$ weights it
+by $\eta$, which gives $\Phi_1(\kappa)$ and proves the expectation formula.
+\end{proof}
+
+\begin{corollary}[Dimension-conditioned second moment and variance]\label{cor:conditional-variance}
+Under the hypotheses and notation of Corollary~\ref{cor:conditional}, for
+$\Phi_0(\kappa)>0$ the exact conditional factorial second moment and variance are
+\begin{equation}\label{eq:conditional-variance}
+\begin{gathered}
+\mathbb E[\eta_k(\eta_k-1)\mid\kappa(C)=\kappa]=\frac{\Phi_2(\kappa)}{\Phi_0(\kappa)},
+\\
+\operatorname{Var}(\eta_k\mid\kappa(C)=\kappa)
+ =\frac{\Phi_2(\kappa)+\Phi_1(\kappa)}{\Phi_0(\kappa)}
+ -\Bigl(\frac{\Phi_1(\kappa)}{\Phi_0(\kappa)}\Bigr)^{2}.
+\end{gathered}
+\end{equation}
+In particular these expressions are undefined if $\Phi_0(\kappa)=0$.
+\end{corollary}
+
+\begin{proof}
+For each coefficient $c_{\kappa,\eta}=[u^{\kappa}z^{\eta}]\,\Epoly(u,z)$, first
+and second $z$-differen\-tiation at $z=1$ give $\eta\,c_{\kappa,\eta}$ and
+$\eta(\eta-1)\,c_{\kappa,\eta}$, respectively; summing over $\eta$ gives
+$\Phi_1(\kappa)$ and $\Phi_2(\kappa)$. Divide by $\Phi_0(\kappa)$. Finally
+$\eta^{2}=\eta(\eta-1)+\eta$ and the usual variance identity give
+\eqref{eq:conditional-variance}. No independence of $\kappa$ and $\eta$ is
+assumed.
+\end{proof}
+
+\subsection{Exact coefficient computation}\label{sec:algorithm}
+
+\begin{proposition}[Orbit dynamic-programming cost]\label{prop:algorithm}
+Assume the compatible orbit lengths and weights have already been computed. Put
+$N_F=\sum_{s,O}a_O=\sum_s|\Fs|$ and $W=\sum_{s,O}a_Ow_O=n\sum_s m_s$. The full
+bivariate coefficient polynomial \eqref{eq:joint} can be formed by tracking two
+starting and current states around each orbit. A straightforward dense
+implementation uses $O\bigl(N_F\,(W+1)(\lfloor W/2\rfloor+1)\bigr)$ integer
+additions and $O\bigl((W+1)(\lfloor W/2\rfloor+1)\bigr)$ stored integer
+coefficients. These are arithmetic-operation bounds, not bit-complexity bounds;
+factorization and orbit construction are excluded.
+\end{proposition}
+
+\begin{proof}
+\emph{Size of the array.} Code dimensions lie in $[0,W]$, and a nonconstant word
+on an orbit of length $a$ has at most $\lfloor a/2\rfloor$ one-runs
+(Proposition~\ref{prop:boundary-interpretation}), while a constant word
+contributes zero to the hull dimension. Hence
+$\eta\le\sum_{s,O}w_O\lfloor a_O/2\rfloor\le W/2$, and the coefficient array is
+indexed by the rectangle $[0,W]\times[0,\lfloor W/2\rfloor]$. Intermediate open
+walks may exceed this bound in the hull degree, but every later transition adds
+nonnegative exponents, so a term leaving the rectangle cannot return to it; the
+same rectangle therefore suffices at every step.
+
+\emph{Recursion.} Keep a running global array $G$, initially the constant
+polynomial $1$. For an orbit of length $a$, each starting state $s_0\in\{0,1\}$
+initializes the current-state arrays with $G$ in state $s_0$ and $0$ in the other
+state; a transition $(r,t)$ shifts an entry by $(w(1-t),\,wr(1-t))$ and adds it to
+state $t$; after $a$ transitions the array in state $s_0$ collects the closed
+walks. Summing the two starting states gives $G\cdot\operatorname{tr}(T_w^{a})$ by
+Proposition~\ref{prop:trace}, and no separate convolution per orbit is needed.
+
+\emph{Cost.} Each step performs four transitions for each of the two starting
+states, each costing one pass over the rectangle, and there are $N_F$ steps;
+a constant number of arrays gives the space bound. Coefficients can have
+$O(N_F)$ bits, so integer additions are not unit-cost in a bit-complexity model.
+\end{proof}
+
+The coefficient calculation uses arbitrary-precision integers, and the
+conditional moments are reduced rationals, so neither the integer coefficients
+nor the reported fractional moments require floating-point rounding. Naive
+enumeration visits all $2^{N_F}$ labeled selections, which the orbit recurrence
+avoids; \S\ref{sec:examples} carries this out for a family with weight sum $W=31$.
+
+\section{Illustrations and computational validation}\label{sec:examples}
+
+We first apply Theorem~\ref{thm:central} to four families of increasing size,
+including one whose orbit data already exceeds exhaustive enumeration, and then
+report the computational validation.
+
+\subsection{Worked examples}\label{sec:worked}
+
+\begin{example}[Four \texorpdfstring{$\F_4$}{F4} components]\label{ex:pilot}
+Consider the case $q=4$, $n=5$, $\lambda=1$, $k=1$ with four labeled $\F_4$
+components, giving $8^4=4096$ labeled selections. Writing $\F_4=\F_2(a)$, the
+factorization is
+\[
+x^5-1=(x+1)(x^2+ax+1)(x^2+(a+1)x+1),
+\]
+and the reciprocal action fixes the linear factor and interchanges the two
+quadratics. Each component hence has orbits of lengths $1$ and $2$ with weights
+$w=1$ and $w=2$. The one-component transfer-matrix traces of
+Proposition~\ref{prop:trace} give the joint enumerator
+\[
+(u+1)(1+u^4+2u^2z^2)=1+u+u^4+u^5+2u^2z^2+2u^3z^2,
+\]
+which is the component joint histogram
+$\{(0,0):1,(1,0):1,(2,2):2,(3,2):2,(4,0):1,(5,0):1\}$. The hull polynomial of one
+component is $2(2+2z^2)=4+4z^2$, so the four-component ring hull polynomial is
+\[
+(4+4z^2)^4=256+1024z^2+1536z^4+1024z^6+256z^8,
+\]
+which is the ring hull histogram $\{0:256,2:1024,4:1536,6:1024,8:256\}$; the
+ring joint histogram has $65$ terms. In particular, each component contributes
+$4$ LCD selections and the ring contributes $256$, as given by
+Corollary~\ref{cor:lcd}.
+\end{example}
+
+\begin{example}[A long orbit: \texorpdfstring{$\F_8$}{F8}, length \texorpdfstring{$7$}{7}]\label{ex:long-orbit}
+Consider $q=8$, $n=7$, $\lambda=1$, $k=1$, with $2^7=128$ labeled selections by
+Corollary~\ref{cor:total}. Here $x^7-1$ splits into seven linear factors over
+$\F_8$, and the reciprocal action has orbit lengths $[1,6]$, all of weight $w=1$.
+By \eqref{eq:orbit-poly}, the hull polynomial \eqref{eq:hull-dist} is therefore
+\[
+2P_{6,1}(z)=2(2+30z+30z^2+2z^3)=4+60z+60z^2+4z^3,
+\]
+which is the hull histogram $\{0:4,1:60,2:60,3:4\}$. The joint $(\kappa,\eta)$
+multiplicities, in agreement with the transfer-matrix product of
+Proposition~\ref{prop:trace}, are listed in Table~\ref{tab:F8}. The
+$4$ LCD selections agree with Corollary~\ref{cor:lcd}. Among the
+$\Phi_0(3)=35$ three-dimensional codes the table gives $12$, $21$ and $2$ with
+hull dimensions $1$, $2$ and $3$, so the conditional mean at $\kappa=3$ is
+$\Phi_1(3)/\Phi_0(3)=60/35=12/7$ by Corollary~\ref{cor:conditional}, and with
+$\Phi_2(3)=54$, Corollary~\ref{cor:conditional-variance} gives the conditional
+variance $78/245$.
+\end{example}
+
+\begin{table}[ht]
+\centering
+\caption{Joint multiplicities $[u^{\kappa}z^{\eta}]\,\Epoly(u,z)$ for $q=8$,
+$n=7$, $\lambda=1$, $k=1$; a dash denotes a zero coefficient. Row $\kappa$ sums
+to $\binom{7}{\kappa}$ and the table sums to $2^7=128$.}
+\label{tab:F8}
+\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+$\kappa\backslash\eta$ & $0$ & $1$ & $2$ & $3$ \\
+\midrule
+$0$ & $1$ & -- & -- & -- \\
+$1$ & $1$ & $6$ & -- & -- \\
+$2$ & -- & $12$ & $9$ & -- \\
+$3$ & -- & $12$ & $21$ & $2$ \\
+$4$ & -- & $12$ & $21$ & $2$ \\
+$5$ & -- & $12$ & $9$ & -- \\
+$6$ & $1$ & $6$ & -- & -- \\
+$7$ & $1$ & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{example}[A mixed algebra with extension weights]\label{ex:mixed}
+Let $\A=\F_4\times\F_{16}$, $n=5$, $k=1$ and $\lambda=(\omega,1)$, where $\omega$
+generates $\F_4^*$; then $256$ labeled selections are counted. The factors in
+the $\F_4$ component give the orbits $(1,1)$ and $(2,2)$, while the five linear
+factors over $\F_{16}$ give orbits $(1,2)$ and $(4,2)$: the weight of a factor in
+the second component is $m_sd_O=2$, since $[\F_{16}:\F_4]=2$. The joint histogram
+has $40$ terms and the hull polynomial is
+\[
+16+112z^2+112z^4+16z^6,
+\]
+of mean $3$ and variance $2$; the minimum $\eta_k=0$ is attained by $16=2^4$
+codes, in agreement with Corollary~\ref{cor:lcd} since there are four orbits. The
+example shows why the extension weights are essential: without the factor
+$m_s=2$ the hull dimensions of the second component would be halved.
+\end{example}
+
+\begin{example}[A family beyond enumeration: \texorpdfstring{$\F_{32}$}{F32}, length \texorpdfstring{$31$}{31}]\label{ex:F32}
+Let $q=32$, $n=31$, $\lambda=1$, $k=1$, so that $N_F=31$ and $W=31$. Naive
+enumeration would visit all $2^{31}$ labeled selections. Write the roots of
+$x^{31}-1$ as $\alpha^j$ with $\alpha$ primitive in $\F_{32}$ and
+$j\in\mathbb Z/31\mathbb Z$; by Lemma~\ref{lem:root-action} the reciprocal acts
+by $j\mapsto-16j\pmod{31}$, which has one fixed point and three cycles of length
+$10$. Hence
+\[
+\Epoly(u,z)=(1+u)\bigl(\operatorname{tr}(T_1(u,z)^{10})\bigr)^3 .
+\]
+The exact expansion of \eqref{eq:joint} has $248$ nonzero coefficients, which sum
+to $2^{31}$ and are computed by the recursion of \S\ref{sec:algorithm} without
+enumerating selections; the whole distribution is displayed in
+Fig.~\ref{fig:joint}. Its support is the diamond
+$0\le\eta\le\min(\kappa,31-\kappa)$ predicted by nondegeneracy, and it is
+symmetric under $\kappa\mapsto31-\kappa$. The enumerator gives $16=2^4$ LCD codes,
+while Corollaries~\ref{cor:mean} and~\ref{cor:variance} give the exact mean
+$15/2$ and variance $15/8$ of the hull dimension. The conditional mean
+$\mathbb E[\eta_k\mid\kappa]$ rises to about $7.74$ at $\kappa=15$ and decreases
+symmetrically; for instance $\mathbb E[\eta_k\mid\kappa=1]=30/31$ and
+$\mathbb E[\eta_k\mid\kappa=15]=240/31$.
+\end{example}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1mm,y=1mm]
+  \fill[black!18] (37.5,37.5) rectangle +(2.5,2.5);
+  \fill[black!18] (40.0,37.5) rectangle +(2.5,2.5);
+  \fill[black!37] (35.0,35.0) rectangle +(2.5,2.5);
+  \fill[black!42] (37.5,35.0) rectangle +(2.5,2.5);
+  \fill[black!42] (40.0,35.0) rectangle +(2.5,2.5);
+  \fill[black!37] (42.5,35.0) rectangle +(2.5,2.5);
+  \fill[black!50] (32.5,32.5) rectangle +(2.5,2.5);
+  \fill[black!57] (35.0,32.5) rectangle +(2.5,2.5);
+  \fill[black!60] (37.5,32.5) rectangle +(2.5,2.5);
+  \fill[black!60] (40.0,32.5) rectangle +(2.5,2.5);
+  \fill[black!57] (42.5,32.5) rectangle +(2.5,2.5);
+  \fill[black!50] (45.0,32.5) rectangle +(2.5,2.5);
+  \fill[black!60] (30.0,30.0) rectangle +(2.5,2.5);
+  \fill[black!68] (32.5,30.0) rectangle +(2.5,2.5);
+  \fill[black!73] (35.0,30.0) rectangle +(2.5,2.5);
+  \fill[black!75] (37.5,30.0) rectangle +(2.5,2.5);
+  \fill[black!75] (40.0,30.0) rectangle +(2.5,2.5);
+  \fill[black!73] (42.5,30.0) rectangle +(2.5,2.5);
+  \fill[black!68] (45.0,30.0) rectangle +(2.5,2.5);
+  \fill[black!60] (47.5,30.0) rectangle +(2.5,2.5);
+  \fill[black!67] (27.5,27.5) rectangle +(2.5,2.5);
+  \fill[black!76] (30.0,27.5) rectangle +(2.5,2.5);
+  \fill[black!81] (32.5,27.5) rectangle +(2.5,2.5);
+  \fill[black!84] (35.0,27.5) rectangle +(2.5,2.5);
+  \fill[black!86] (37.5,27.5) rectangle +(2.5,2.5);
+  \fill[black!86] (40.0,27.5) rectangle +(2.5,2.5);
+  \fill[black!84] (42.5,27.5) rectangle +(2.5,2.5);
+  \fill[black!81] (45.0,27.5) rectangle +(2.5,2.5);
+  \fill[black!76] (47.5,27.5) rectangle +(2.5,2.5);
+  \fill[black!67] (50.0,27.5) rectangle +(2.5,2.5);
+  \fill[black!71] (25.0,25.0) rectangle +(2.5,2.5);
+  \fill[black!80] (27.5,25.0) rectangle +(2.5,2.5);
+  \fill[black!86] (30.0,25.0) rectangle +(2.5,2.5);
+  \fill[black!90] (32.5,25.0) rectangle +(2.5,2.5);
+  \fill[black!92] (35.0,25.0) rectangle +(2.5,2.5);
+  \fill[black!93] (37.5,25.0) rectangle +(2.5,2.5);
+  \fill[black!93] (40.0,25.0) rectangle +(2.5,2.5);
+  \fill[black!92] (42.5,25.0) rectangle +(2.5,2.5);
+  \fill[black!90] (45.0,25.0) rectangle +(2.5,2.5);
+  \fill[black!86] (47.5,25.0) rectangle +(2.5,2.5);
+  \fill[black!80] (50.0,25.0) rectangle +(2.5,2.5);
+  \fill[black!71] (52.5,25.0) rectangle +(2.5,2.5);
+  \fill[black!73] (22.5,22.5) rectangle +(2.5,2.5);
+  \fill[black!83] (25.0,22.5) rectangle +(2.5,2.5);
+  \fill[black!89] (27.5,22.5) rectangle +(2.5,2.5);
+  \fill[black!93] (30.0,22.5) rectangle +(2.5,2.5);
+  \fill[black!95] (32.5,22.5) rectangle +(2.5,2.5);
+  \fill[black!97] (35.0,22.5) rectangle +(2.5,2.5);
+  \fill[black!98] (37.5,22.5) rectangle +(2.5,2.5);
+  \fill[black!98] (40.0,22.5) rectangle +(2.5,2.5);
+  \fill[black!97] (42.5,22.5) rectangle +(2.5,2.5);
+  \fill[black!95] (45.0,22.5) rectangle +(2.5,2.5);
+  \fill[black!93] (47.5,22.5) rectangle +(2.5,2.5);
+  \fill[black!89] (50.0,22.5) rectangle +(2.5,2.5);
+  \fill[black!83] (52.5,22.5) rectangle +(2.5,2.5);
+  \fill[black!73] (55.0,22.5) rectangle +(2.5,2.5);
+  \fill[black!73] (20.0,20.0) rectangle +(2.5,2.5);
+  \fill[black!83] (22.5,20.0) rectangle +(2.5,2.5);
+  \fill[black!89] (25.0,20.0) rectangle +(2.5,2.5);
+  \fill[black!93] (27.5,20.0) rectangle +(2.5,2.5);
+  \fill[black!96] (30.0,20.0) rectangle +(2.5,2.5);
+  \fill[black!98] (32.5,20.0) rectangle +(2.5,2.5);
+  \fill[black!99] (35.0,20.0) rectangle +(2.5,2.5);
+  \fill[black!100] (37.5,20.0) rectangle +(2.5,2.5);
+  \fill[black!100] (40.0,20.0) rectangle +(2.5,2.5);
+  \fill[black!99] (42.5,20.0) rectangle +(2.5,2.5);
+  \fill[black!98] (45.0,20.0) rectangle +(2.5,2.5);
+  \fill[black!96] (47.5,20.0) rectangle +(2.5,2.5);
+  \fill[black!93] (50.0,20.0) rectangle +(2.5,2.5);
+  \fill[black!89] (52.5,20.0) rectangle +(2.5,2.5);
+  \fill[black!83] (55.0,20.0) rectangle +(2.5,2.5);
+  \fill[black!73] (57.5,20.0) rectangle +(2.5,2.5);
+  \fill[black!72] (17.5,17.5) rectangle +(2.5,2.5);
+  \fill[black!81] (20.0,17.5) rectangle +(2.5,2.5);
+  \fill[black!87] (22.5,17.5) rectangle +(2.5,2.5);
+  \fill[black!91] (25.0,17.5) rectangle +(2.5,2.5);
+  \fill[black!94] (27.5,17.5) rectangle +(2.5,2.5);
+  \fill[black!96] (30.0,17.5) rectangle +(2.5,2.5);
+  \fill[black!98] (32.5,17.5) rectangle +(2.5,2.5);
+  \fill[black!99] (35.0,17.5) rectangle +(2.5,2.5);
+  \fill[black!99] (37.5,17.5) rectangle +(2.5,2.5);
+  \fill[black!99] (40.0,17.5) rectangle +(2.5,2.5);
+  \fill[black!99] (42.5,17.5) rectangle +(2.5,2.5);
+  \fill[black!98] (45.0,17.5) rectangle +(2.5,2.5);
+  \fill[black!96] (47.5,17.5) rectangle +(2.5,2.5);
+  \fill[black!94] (50.0,17.5) rectangle +(2.5,2.5);
+  \fill[black!91] (52.5,17.5) rectangle +(2.5,2.5);
+  \fill[black!87] (55.0,17.5) rectangle +(2.5,2.5);
+  \fill[black!81] (57.5,17.5) rectangle +(2.5,2.5);
+  \fill[black!72] (60.0,17.5) rectangle +(2.5,2.5);
+  \fill[black!69] (15.0,15.0) rectangle +(2.5,2.5);
+  \fill[black!77] (17.5,15.0) rectangle +(2.5,2.5);
+  \fill[black!83] (20.0,15.0) rectangle +(2.5,2.5);
+  \fill[black!87] (22.5,15.0) rectangle +(2.5,2.5);
+  \fill[black!90] (25.0,15.0) rectangle +(2.5,2.5);
+  \fill[black!92] (27.5,15.0) rectangle +(2.5,2.5);
+  \fill[black!94] (30.0,15.0) rectangle +(2.5,2.5);
+  \fill[black!95] (32.5,15.0) rectangle +(2.5,2.5);
+  \fill[black!96] (35.0,15.0) rectangle +(2.5,2.5);
+  \fill[black!96] (37.5,15.0) rectangle +(2.5,2.5);
+  \fill[black!96] (40.0,15.0) rectangle +(2.5,2.5);
+  \fill[black!96] (42.5,15.0) rectangle +(2.5,2.5);
+  \fill[black!95] (45.0,15.0) rectangle +(2.5,2.5);
+  \fill[black!94] (47.5,15.0) rectangle +(2.5,2.5);
+  \fill[black!92] (50.0,15.0) rectangle +(2.5,2.5);
+  \fill[black!90] (52.5,15.0) rectangle +(2.5,2.5);
+  \fill[black!87] (55.0,15.0) rectangle +(2.5,2.5);
+  \fill[black!83] (57.5,15.0) rectangle +(2.5,2.5);
+  \fill[black!77] (60.0,15.0) rectangle +(2.5,2.5);
+  \fill[black!69] (62.5,15.0) rectangle +(2.5,2.5);
+  \fill[black!64] (12.5,12.5) rectangle +(2.5,2.5);
+  \fill[black!72] (15.0,12.5) rectangle +(2.5,2.5);
+  \fill[black!77] (17.5,12.5) rectangle +(2.5,2.5);
+  \fill[black!81] (20.0,12.5) rectangle +(2.5,2.5);
+  \fill[black!84] (22.5,12.5) rectangle +(2.5,2.5);
+  \fill[black!86] (25.0,12.5) rectangle +(2.5,2.5);
+  \fill[black!87] (27.5,12.5) rectangle +(2.5,2.5);
+  \fill[black!88] (30.0,12.5) rectangle +(2.5,2.5);
+  \fill[black!89] (32.5,12.5) rectangle +(2.5,2.5);
+  \fill[black!90] (35.0,12.5) rectangle +(2.5,2.5);
+  \fill[black!90] (37.5,12.5) rectangle +(2.5,2.5);
+  \fill[black!90] (40.0,12.5) rectangle +(2.5,2.5);
+  \fill[black!90] (42.5,12.5) rectangle +(2.5,2.5);
+  \fill[black!89] (45.0,12.5) rectangle +(2.5,2.5);
+  \fill[black!88] (47.5,12.5) rectangle +(2.5,2.5);
+  \fill[black!87] (50.0,12.5) rectangle +(2.5,2.5);
+  \fill[black!86] (52.5,12.5) rectangle +(2.5,2.5);
+  \fill[black!84] (55.0,12.5) rectangle +(2.5,2.5);
+  \fill[black!81] (57.5,12.5) rectangle +(2.5,2.5);
+  \fill[black!77] (60.0,12.5) rectangle +(2.5,2.5);
+  \fill[black!72] (62.5,12.5) rectangle +(2.5,2.5);
+  \fill[black!64] (65.0,12.5) rectangle +(2.5,2.5);
+  \fill[black!57] (10.0,10.0) rectangle +(2.5,2.5);
+  \fill[black!65] (12.5,10.0) rectangle +(2.5,2.5);
+  \fill[black!69] (15.0,10.0) rectangle +(2.5,2.5);
+  \fill[black!72] (17.5,10.0) rectangle +(2.5,2.5);
+  \fill[black!75] (20.0,10.0) rectangle +(2.5,2.5);
+  \fill[black!77] (22.5,10.0) rectangle +(2.5,2.5);
+  \fill[black!78] (25.0,10.0) rectangle +(2.5,2.5);
+  \fill[black!79] (27.5,10.0) rectangle +(2.5,2.5);
+  \fill[black!80] (30.0,10.0) rectangle +(2.5,2.5);
+  \fill[black!80] (32.5,10.0) rectangle +(2.5,2.5);
+  \fill[black!81] (35.0,10.0) rectangle +(2.5,2.5);
+  \fill[black!81] (37.5,10.0) rectangle +(2.5,2.5);
+  \fill[black!81] (40.0,10.0) rectangle +(2.5,2.5);
+  \fill[black!81] (42.5,10.0) rectangle +(2.5,2.5);
+  \fill[black!80] (45.0,10.0) rectangle +(2.5,2.5);
+  \fill[black!80] (47.5,10.0) rectangle +(2.5,2.5);
+  \fill[black!79] (50.0,10.0) rectangle +(2.5,2.5);
+  \fill[black!78] (52.5,10.0) rectangle +(2.5,2.5);
+  \fill[black!77] (55.0,10.0) rectangle +(2.5,2.5);
+  \fill[black!75] (57.5,10.0) rectangle +(2.5,2.5);
+  \fill[black!72] (60.0,10.0) rectangle +(2.5,2.5);
+  \fill[black!69] (62.5,10.0) rectangle +(2.5,2.5);
+  \fill[black!65] (65.0,10.0) rectangle +(2.5,2.5);
+  \fill[black!57] (67.5,10.0) rectangle +(2.5,2.5);
+  \fill[black!49] (7.5,7.5) rectangle +(2.5,2.5);
+  \fill[black!55] (10.0,7.5) rectangle +(2.5,2.5);
+  \fill[black!59] (12.5,7.5) rectangle +(2.5,2.5);
+  \fill[black!62] (15.0,7.5) rectangle +(2.5,2.5);
+  \fill[black!63] (17.5,7.5) rectangle +(2.5,2.5);
+  \fill[black!65] (20.0,7.5) rectangle +(2.5,2.5);
+  \fill[black!66] (22.5,7.5) rectangle +(2.5,2.5);
+  \fill[black!67] (25.0,7.5) rectangle +(2.5,2.5);
+  \fill[black!67] (27.5,7.5) rectangle +(2.5,2.5);
+  \fill[black!68] (30.0,7.5) rectangle +(2.5,2.5);
+  \fill[black!68] (32.5,7.5) rectangle +(2.5,2.5);
+  \fill[black!68] (35.0,7.5) rectangle +(2.5,2.5);
+  \fill[black!68] (37.5,7.5) rectangle +(2.5,2.5);
+  \fill[black!68] (40.0,7.5) rectangle +(2.5,2.5);
+  \fill[black!68] (42.5,7.5) rectangle +(2.5,2.5);
+  \fill[black!68] (45.0,7.5) rectangle +(2.5,2.5);
+  \fill[black!68] (47.5,7.5) rectangle +(2.5,2.5);
+  \fill[black!67] (50.0,7.5) rectangle +(2.5,2.5);
+  \fill[black!67] (52.5,7.5) rectangle +(2.5,2.5);
+  \fill[black!66] (55.0,7.5) rectangle +(2.5,2.5);
+  \fill[black!65] (57.5,7.5) rectangle +(2.5,2.5);
+  \fill[black!63] (60.0,7.5) rectangle +(2.5,2.5);
+  \fill[black!62] (62.5,7.5) rectangle +(2.5,2.5);
+  \fill[black!59] (65.0,7.5) rectangle +(2.5,2.5);
+  \fill[black!55] (67.5,7.5) rectangle +(2.5,2.5);
+  \fill[black!49] (70.0,7.5) rectangle +(2.5,2.5);
+  \fill[black!38] (5.0,5.0) rectangle +(2.5,2.5);
+  \fill[black!44] (7.5,5.0) rectangle +(2.5,2.5);
+  \fill[black!46] (10.0,5.0) rectangle +(2.5,2.5);
+  \fill[black!48] (12.5,5.0) rectangle +(2.5,2.5);
+  \fill[black!49] (15.0,5.0) rectangle +(2.5,2.5);
+  \fill[black!49] (17.5,5.0) rectangle +(2.5,2.5);
+  \fill[black!50] (20.0,5.0) rectangle +(2.5,2.5);
+  \fill[black!50] (22.5,5.0) rectangle +(2.5,2.5);
+  \fill[black!51] (25.0,5.0) rectangle +(2.5,2.5);
+  \fill[black!51] (27.5,5.0) rectangle +(2.5,2.5);
+  \fill[black!51] (30.0,5.0) rectangle +(2.5,2.5);
+  \fill[black!51] (32.5,5.0) rectangle +(2.5,2.5);
+  \fill[black!51] (35.0,5.0) rectangle +(2.5,2.5);
+  \fill[black!52] (37.5,5.0) rectangle +(2.5,2.5);
+  \fill[black!52] (40.0,5.0) rectangle +(2.5,2.5);
+  \fill[black!51] (42.5,5.0) rectangle +(2.5,2.5);
+  \fill[black!51] (45.0,5.0) rectangle +(2.5,2.5);
+  \fill[black!51] (47.5,5.0) rectangle +(2.5,2.5);
+  \fill[black!51] (50.0,5.0) rectangle +(2.5,2.5);
+  \fill[black!51] (52.5,5.0) rectangle +(2.5,2.5);
+  \fill[black!50] (55.0,5.0) rectangle +(2.5,2.5);
+  \fill[black!50] (57.5,5.0) rectangle +(2.5,2.5);
+  \fill[black!49] (60.0,5.0) rectangle +(2.5,2.5);
+  \fill[black!49] (62.5,5.0) rectangle +(2.5,2.5);
+  \fill[black!48] (65.0,5.0) rectangle +(2.5,2.5);
+  \fill[black!46] (67.5,5.0) rectangle +(2.5,2.5);
+  \fill[black!44] (70.0,5.0) rectangle +(2.5,2.5);
+  \fill[black!38] (72.5,5.0) rectangle +(2.5,2.5);
+  \fill[black!25] (2.5,2.5) rectangle +(2.5,2.5);
+  \fill[black!29] (5.0,2.5) rectangle +(2.5,2.5);
+  \fill[black!29] (7.5,2.5) rectangle +(2.5,2.5);
+  \fill[black!29] (10.0,2.5) rectangle +(2.5,2.5);
+  \fill[black!29] (12.5,2.5) rectangle +(2.5,2.5);
+  \fill[black!29] (15.0,2.5) rectangle +(2.5,2.5);
+  \fill[black!29] (17.5,2.5) rectangle +(2.5,2.5);
+  \fill[black!29] (20.0,2.5) rectangle +(2.5,2.5);
+  \fill[black!29] (22.5,2.5) rectangle +(2.5,2.5);
+  \fill[black!25] (25.0,2.5) rectangle +(2.5,2.5);
+  \fill[black!29] (27.5,2.5) rectangle +(2.5,2.5);
+  \fill[black!32] (30.0,2.5) rectangle +(2.5,2.5);
+  \fill[black!32] (32.5,2.5) rectangle +(2.5,2.5);
+  \fill[black!32] (35.0,2.5) rectangle +(2.5,2.5);
+  \fill[black!32] (37.5,2.5) rectangle +(2.5,2.5);
+  \fill[black!32] (40.0,2.5) rectangle +(2.5,2.5);
+  \fill[black!32] (42.5,2.5) rectangle +(2.5,2.5);
+  \fill[black!32] (45.0,2.5) rectangle +(2.5,2.5);
+  \fill[black!32] (47.5,2.5) rectangle +(2.5,2.5);
+  \fill[black!29] (50.0,2.5) rectangle +(2.5,2.5);
+  \fill[black!25] (52.5,2.5) rectangle +(2.5,2.5);
+  \fill[black!29] (55.0,2.5) rectangle +(2.5,2.5);
+  \fill[black!29] (57.5,2.5) rectangle +(2.5,2.5);
+  \fill[black!29] (60.0,2.5) rectangle +(2.5,2.5);
+  \fill[black!29] (62.5,2.5) rectangle +(2.5,2.5);
+  \fill[black!29] (65.0,2.5) rectangle +(2.5,2.5);
+  \fill[black!29] (67.5,2.5) rectangle +(2.5,2.5);
+  \fill[black!29] (70.0,2.5) rectangle +(2.5,2.5);
+  \fill[black!29] (72.5,2.5) rectangle +(2.5,2.5);
+  \fill[black!25] (75.0,2.5) rectangle +(2.5,2.5);
+  \fill[black!8] (0.0,0.0) rectangle +(2.5,2.5);
+  \fill[black!8] (2.5,0.0) rectangle +(2.5,2.5);
+  \fill[black!14] (25.0,0.0) rectangle +(2.5,2.5);
+  \fill[black!14] (27.5,0.0) rectangle +(2.5,2.5);
+  \fill[black!14] (50.0,0.0) rectangle +(2.5,2.5);
+  \fill[black!14] (52.5,0.0) rectangle +(2.5,2.5);
+  \fill[black!8] (75.0,0.0) rectangle +(2.5,2.5);
+  \fill[black!8] (77.5,0.0) rectangle +(2.5,2.5);
+  \draw[black!30,line width=0.15pt] (0,0) grid[step=2.5] (80.0,40.0);
+  \draw[black,line width=0.4pt] (0,0) rectangle (80.0,40.0);
+  \draw[black,line width=0.4pt] (1.25,0) -- +(0,-1.2mm);
+  \node[font=\scriptsize,anchor=north] at (1.25,-1.8) {0};
+  \draw[black,line width=0.4pt] (13.75,0) -- +(0,-1.2mm);
+  \node[font=\scriptsize,anchor=north] at (13.75,-1.8) {5};
+  \draw[black,line width=0.4pt] (26.25,0) -- +(0,-1.2mm);
+  \node[font=\scriptsize,anchor=north] at (26.25,-1.8) {10};
+  \draw[black,line width=0.4pt] (38.75,0) -- +(0,-1.2mm);
+  \node[font=\scriptsize,anchor=north] at (38.75,-1.8) {15};
+  \draw[black,line width=0.4pt] (51.25,0) -- +(0,-1.2mm);
+  \node[font=\scriptsize,anchor=north] at (51.25,-1.8) {20};
+  \draw[black,line width=0.4pt] (63.75,0) -- +(0,-1.2mm);
+  \node[font=\scriptsize,anchor=north] at (63.75,-1.8) {25};
+  \draw[black,line width=0.4pt] (76.25,0) -- +(0,-1.2mm);
+  \node[font=\scriptsize,anchor=north] at (76.25,-1.8) {30};
+  \draw[black,line width=0.4pt] (0,1.25) -- +(-1.2mm,0);
+  \node[font=\scriptsize,anchor=east] at (-1.8,1.25) {0};
+  \draw[black,line width=0.4pt] (0,13.75) -- +(-1.2mm,0);
+  \node[font=\scriptsize,anchor=east] at (-1.8,13.75) {5};
+  \draw[black,line width=0.4pt] (0,26.25) -- +(-1.2mm,0);
+  \node[font=\scriptsize,anchor=east] at (-1.8,26.25) {10};
+  \draw[black,line width=0.4pt] (0,38.75) -- +(-1.2mm,0);
+  \node[font=\scriptsize,anchor=east] at (-1.8,38.75) {15};
+  \draw[black,line width=0.6pt] (1.25,1.25) -- (3.75,3.67) -- (6.25,5.93) -- (8.75,8.02) -- (11.25,9.96) -- (13.75,11.73) -- (16.25,13.35) -- (18.75,14.80) -- (21.25,16.09) -- (23.75,17.22) -- (26.25,18.19) -- (28.75,18.99) -- (31.25,19.64) -- (33.75,20.12) -- (36.25,20.44) -- (38.75,20.60) -- (41.25,20.60) -- (43.75,20.44) -- (46.25,20.12) -- (48.75,19.64) -- (51.25,18.99) -- (53.75,18.19) -- (56.25,17.22) -- (58.75,16.09) -- (61.25,14.80) -- (63.75,13.35) -- (66.25,11.73) -- (68.75,9.96) -- (71.25,8.02) -- (73.75,5.93) -- (76.25,3.67) -- (78.75,1.25);
+  \fill[white] (1.25,1.25) circle (0.5mm);
+  \draw[black,line width=0.3pt] (1.25,1.25) circle (0.5mm);
+  \fill[white] (3.75,3.67) circle (0.5mm);
+  \draw[black,line width=0.3pt] (3.75,3.67) circle (0.5mm);
+  \fill[white] (6.25,5.93) circle (0.5mm);
+  \draw[black,line width=0.3pt] (6.25,5.93) circle (0.5mm);
+  \fill[white] (8.75,8.02) circle (0.5mm);
+  \draw[black,line width=0.3pt] (8.75,8.02) circle (0.5mm);
+  \fill[white] (11.25,9.96) circle (0.5mm);
+  \draw[black,line width=0.3pt] (11.25,9.96) circle (0.5mm);
+  \fill[white] (13.75,11.73) circle (0.5mm);
+  \draw[black,line width=0.3pt] (13.75,11.73) circle (0.5mm);
+  \fill[white] (16.25,13.35) circle (0.5mm);
+  \draw[black,line width=0.3pt] (16.25,13.35) circle (0.5mm);
+  \fill[white] (18.75,14.80) circle (0.5mm);
+  \draw[black,line width=0.3pt] (18.75,14.80) circle (0.5mm);
+  \fill[white] (21.25,16.09) circle (0.5mm);
+  \draw[black,line width=0.3pt] (21.25,16.09) circle (0.5mm);
+  \fill[white] (23.75,17.22) circle (0.5mm);
+  \draw[black,line width=0.3pt] (23.75,17.22) circle (0.5mm);
+  \fill[white] (26.25,18.19) circle (0.5mm);
+  \draw[black,line width=0.3pt] (26.25,18.19) circle (0.5mm);
+  \fill[white] (28.75,18.99) circle (0.5mm);
+  \draw[black,line width=0.3pt] (28.75,18.99) circle (0.5mm);
+  \fill[white] (31.25,19.64) circle (0.5mm);
+  \draw[black,line width=0.3pt] (31.25,19.64) circle (0.5mm);
+  \fill[white] (33.75,20.12) circle (0.5mm);
+  \draw[black,line width=0.3pt] (33.75,20.12) circle (0.5mm);
+  \fill[white] (36.25,20.44) circle (0.5mm);
+  \draw[black,line width=0.3pt] (36.25,20.44) circle (0.5mm);
+  \fill[white] (38.75,20.60) circle (0.5mm);
+  \draw[black,line width=0.3pt] (38.75,20.60) circle (0.5mm);
+  \fill[white] (41.25,20.60) circle (0.5mm);
+  \draw[black,line width=0.3pt] (41.25,20.60) circle (0.5mm);
+  \fill[white] (43.75,20.44) circle (0.5mm);
+  \draw[black,line width=0.3pt] (43.75,20.44) circle (0.5mm);
+  \fill[white] (46.25,20.12) circle (0.5mm);
+  \draw[black,line width=0.3pt] (46.25,20.12) circle (0.5mm);
+  \fill[white] (48.75,19.64) circle (0.5mm);
+  \draw[black,line width=0.3pt] (48.75,19.64) circle (0.5mm);
+  \fill[white] (51.25,18.99) circle (0.5mm);
+  \draw[black,line width=0.3pt] (51.25,18.99) circle (0.5mm);
+  \fill[white] (53.75,18.19) circle (0.5mm);
+  \draw[black,line width=0.3pt] (53.75,18.19) circle (0.5mm);
+  \fill[white] (56.25,17.22) circle (0.5mm);
+  \draw[black,line width=0.3pt] (56.25,17.22) circle (0.5mm);
+  \fill[white] (58.75,16.09) circle (0.5mm);
+  \draw[black,line width=0.3pt] (58.75,16.09) circle (0.5mm);
+  \fill[white] (61.25,14.80) circle (0.5mm);
+  \draw[black,line width=0.3pt] (61.25,14.80) circle (0.5mm);
+  \fill[white] (63.75,13.35) circle (0.5mm);
+  \draw[black,line width=0.3pt] (63.75,13.35) circle (0.5mm);
+  \fill[white] (66.25,11.73) circle (0.5mm);
+  \draw[black,line width=0.3pt] (66.25,11.73) circle (0.5mm);
+  \fill[white] (68.75,9.96) circle (0.5mm);
+  \draw[black,line width=0.3pt] (68.75,9.96) circle (0.5mm);
+  \fill[white] (71.25,8.02) circle (0.5mm);
+  \draw[black,line width=0.3pt] (71.25,8.02) circle (0.5mm);
+  \fill[white] (73.75,5.93) circle (0.5mm);
+  \draw[black,line width=0.3pt] (73.75,5.93) circle (0.5mm);
+  \fill[white] (76.25,3.67) circle (0.5mm);
+  \draw[black,line width=0.3pt] (76.25,3.67) circle (0.5mm);
+  \fill[white] (78.75,1.25) circle (0.5mm);
+  \draw[black,line width=0.3pt] (78.75,1.25) circle (0.5mm);
+  \node[font=\small,anchor=north] at (40.0,-4.6) {$\kappa$};
+  \node[font=\small,anchor=south] at (-7.5,20.0) {$\eta_k$};
+  \fill[black!8] (0.0,-13.0) rectangle +(3mm,3mm);
+  \fill[black!18] (3.0,-13.0) rectangle +(3mm,3mm);
+  \fill[black!28] (6.0,-13.0) rectangle +(3mm,3mm);
+  \fill[black!39] (9.0,-13.0) rectangle +(3mm,3mm);
+  \fill[black!49] (12.0,-13.0) rectangle +(3mm,3mm);
+  \fill[black!59] (15.0,-13.0) rectangle +(3mm,3mm);
+  \fill[black!69] (18.0,-13.0) rectangle +(3mm,3mm);
+  \fill[black!80] (21.0,-13.0) rectangle +(3mm,3mm);
+  \fill[black!90] (24.0,-13.0) rectangle +(3mm,3mm);
+  \fill[black!100] (27.0,-13.0) rectangle +(3mm,3mm);
+  \draw[black,line width=0.4pt] (0,-13.0) rectangle (30.0,-10.0);
+  \node[font=\scriptsize,anchor=west,align=left,text width=34mm] at (32.5,-11.5) {multiplicity, $\log$ scale};
+  \node[font=\scriptsize,anchor=west,align=left,text width=40mm] at (32.5,-15.5) {$1$ (light) to $8.55\times10^{7}$ (dark)};
+  \fill[white] (1.5,-18.0) circle (0.5mm);
+  \draw[black,line width=0.3pt] (1.5,-18.0) circle (0.5mm);
+  \node[font=\scriptsize,anchor=west] at (4.0,-18.0) {exact conditional mean $\mathbb E[\eta_k\mid\kappa]$};
+\end{tikzpicture}
+\caption{Exact joint multiplicities $[u^{\kappa}z^{\eta}]\,\Epoly(u,z)$ for
+$\F_{32}$, $n=31$, $\lambda=1$, $k=1$, shaded on a logarithmic scale. The $248$
+nonzero coefficients, obtained from the orbit data of Example~\ref{ex:F32} by the
+recurrence of \S\ref{sec:algorithm}, account exactly for all $2^{31}$ labeled
+factor selections. Nonzero coefficients fill the diamond
+$0\le\eta\le\min(\kappa,31-\kappa)$ and are symmetric under
+$\kappa\mapsto31-\kappa$; the white circles mark the exact conditional mean
+$\mathbb E[\eta_k\mid\kappa]$.}
+\label{fig:joint}
+\end{figure}
+
+\subsection{Computational validation}\label{sec:verification}
+
+Each joint enumerator is evaluated twice: by the trace recursion of
+Proposition~\ref{prop:algorithm} and through the closed-form coefficients of
+Proposition~\ref{prop:closed} followed by convolution over the orbits. The two
+evaluations agree coefficient by coefficient for every family of
+Table~\ref{tab:validation}. All coefficient arithmetic is integer arithmetic on
+the orbit data, and the conditional moments of Corollaries~\ref{cor:conditional}
+and~\ref{cor:conditional-variance} are reduced rationals, so no floating-point
+rounding enters the reported values.
+
+Independently, hull dimensions of individual codes are computed from the
+definitions rather than from the orbit formula. For a selection $J$ a generator
+matrix $B$ of $C(J)$ is formed in coefficient coordinates, the $k$-Galois dual is
+obtained as $\rho_{s,k}(\operatorname{null}B)$ over the component field, and the
+hull dimension from
+\[
+\dim\Hull_k(C)=\dim C+\dim D-\dim(C+D).
+\]
+All ranks and null spaces are computed over the component field. In each of the
+small families of Table~\ref{tab:validation} this reproduces every hull dimension
+predicted by the orbit formula, and the joint histograms agree as well. The
+families in characteristics $3$ and $5$ are included because signs and
+normalizations in \eqref{eq:reciprocal} are invisible when $-1=1$, so they
+exercise the formulas in a different arithmetic setting. For $\F_{32}$ and
+$n=31$ individual codes agree with the orbit formula, while the enumerator itself
+counts all $2^{31}$ selections exactly through the orbit recurrence.
+
+For the mixed algebra $\A=\F_4[X]/\langle X(X^2+X+\omega)\rangle$ with
+$\lambda=\omega(1+X+X^2)$ the same count was obtained directly in
+polynomial-quotient coordinates. In the basis $1,X,X^2$ each $\A$-valued
+orthogonality condition becomes three equations over $\F_4$. There the Frobenius
+map is ring squaring, not coefficientwise squaring with $X$ fixed; since squaring
+is bijective on $\F_4$, the nullity of the resulting linear system is the hull
+dimension. The result agrees with the componentwise enumeration of
+Example~\ref{ex:mixed}.
+
+\begin{table}[ht]
+\centering
+\caption{Representative families and enumerative results. Dimensions of the
+$\F_{16}$ component are taken over $\F_4$, so its orbit weights contain the
+extension degree $[\F_{16}:\F_4]=2$; here $\omega$ generates $\F_4^*$ and
+$i\in\F_9$ satisfies $i^2=-1$. The last column lists the independent check
+described in \S\ref{sec:verification}, and ``codes'' is the number of labeled
+factor selections.}
+\label{tab:validation}
+\footnotesize
+\renewcommand{\arraystretch}{1.25}
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabularx}{\textwidth}{@{}L{25mm}L{19mm}rL{28mm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Family and parameters & Reciprocal orbits $(a_O,w_O)$ & Codes & Principal exact result & Independent check \\
+\midrule
+$\F_4^{\times4}$\newline $n=5$, $\lambda=1$, $k=1$ & $(1,1)$, $(2,2)$ per component & $4096$ & $65$ joint terms; $256$ LCD & all selections \\
+$\F_8$\newline $n=7$, $\lambda=1$, $k=1$ & $(1,1)$, $(6,1)$ & $128$ & $16$ joint terms (Table~\ref{tab:F8}); $\mathbb E[\eta_k\mid\kappa=3]=12/7$ & all codes \\
+$\F_{16}\!/\!\F_4$\newline $n=5$, $\lambda=1$, $k=1$ & $(1,2)$, $(4,2)$ & $32$ & mean $2$, variance $1$ & all codes \\
+$\F_4$\newline $n=5$, $\lambda=\omega$, $k=1$ & $(1,1)$, $(2,2)$ & $8$ & $4$ LCD & all codes \\
+$\F_{4}\!\times\!\F_{16}$\newline $n=5$, $\lambda=(\omega,1)$, $k=1$ & $(1,1),(2,2)$, $(1,2),(4,2)$ & $256$ & $40$ joint terms; mean $3$, variance $2$ & all codes; quotient coordinates \\
+$\F_3$\newline $n=4$, $\lambda=1,-1$, $k=0$ & --- & $8,4$ & distributions from the orbit formula; three characteristics & all selections \\
+$\F_9$\newline $n=4$, $\lambda=1,i,-1$, $k=1$ & --- & $16,4,16$ & distributions from the orbit formula & all selections \\
+$\F_9$, $\F_{25}$\newline $n=8$ and $n=6$, $\lambda=1$, $k=1$ & --- & $256,64$ & distributions from the orbit formula & all selections \\
+$\F_{32}$\newline $n=31$, $\lambda=1$, $k=1$ & $(1,1)$, $(10,1)^3$ & $2^{31}$ & $248$ joint terms (Fig.~\ref{fig:joint}); mean $15/2$ & exact enumerator; individual codes \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+As an external benchmark, the Euclidean cyclic cases $(q,n)=(2,21)$ and
+$(3,16)$ were computed with prime-field polynomial and matrix routines that do
+not use the orbit machinery. Among all $64$ binary cyclic codes of length $21$
+exactly $16$ have hull dimension $6$, and among all $128$ ternary cyclic codes of
+length $16$ exactly $32$ have hull dimension $4$. These are the counts of
+Examples~16 and~17 of \cite{sangwisut2015}, respectively, and the full joint
+histograms of both families agree with the orbit enumeration.
+
+\section{Conclusions}\label{sec:conclusion}
+
+For a square-free affine algebra $\A$ with labeled field components and
+simple-root moduli, every $\lambda$-constacyclic code over $\A$ corresponds to
+exactly one labeled factor selection. For a compatible twist its $k$-Galois
+hull dimension is a weighted boundary count on the reciprocal-factor orbits,
+$\eta_k(C(J))=\sum_{s,O}w_O\sum_i\varepsilon_{O,i}(1-\varepsilon_{O,i+1})$ with
+$w_O=m_sd_O$. The bijection needs only the square-free, simple-root and
+fixed-label hypotheses.
+The compatibility condition is needed for the same-factor-set permutation, hence
+for the orbit product, but not for the dual-generator formula
+(Theorem~\ref{thm:dual-generator}), and for incompatible components the hull is
+trivial (Remark~\ref{rem:incompatible}).
+
+Both statistics are additive over orbits, so the joint enumerator factorizes,
+\[
+\Epoly(u,z)=\prod_{s=1}^{N}\prod_{O\in\Os}
+\operatorname{tr}\bigl(T_{w_O}(u,z)^{a_O}\bigr),
+\]
+This is more than the sum of a hull-only count and a dimension count. The two
+statistics are carried by the same variables $u$ and $z$, so the coefficient
+$[u^{\kappa}z^{\eta}]$ counts codes with both parameters prescribed.
+Specialization recovers the code-dimension distribution, the hull polynomial,
+the exact labeled LCD count $2^{\sum_s|\Os|}$, and the mean and variance of the
+hull dimension, with the exceptional term for orbits of length two.
+Differentiation in $z$ at fixed $\kappa$ gives the exact conditional
+distribution, mean and variance of the hull dimension at every attainable code
+dimension (Corollaries~\ref{cor:conditional}
+and~\ref{cor:conditional-variance}).
+
+The two descriptions of the one-orbit polynomial serve different purposes. The
+transfer matrix $\operatorname{tr}(T_w^{a})$ gives a uniform recursion whose cost
+grows polynomially in the number of factors and in the weight sum,
+$O\bigl(N_F(W+1)(\lfloor W/2\rfloor+1)\bigr)$ integer additions
+(Proposition~\ref{prop:algorithm}), whereas the closed form
+$P_{a,w}(z)=2+\sum_r\frac{a}{r}\binom{a-1}{2r-1}z^{rw}$ exhibits each coefficient
+directly as a count of run compositions. Both are exact and give the same
+coefficients without enumerating the $2^{N_F}$ labeled selections.
+
+The examples span the range of the formula. At one end,
+$\F_4^{\times4}$ keeps all $4096$ selections within reach of hand computation,
+and the mixed algebra $\F_4\times\F_{16}$ shows the role of the extension
+weights. At the other end, $\F_{32}$ of length $31$ compresses the orbit data
+$(1,1),(10,1)^3$ and $2^{31}$ selections into $248$ nonzero coefficients with
+symmetric hull multiplicities (Fig.~\ref{fig:joint}). Direct finite-field linear-algebra computations reproduce
+the orbit predictions in characteristics $2$, $3$ and $5$, including the
+mixed-algebra case in quotient coordinates, and the published counts of
+\cite{sangwisut2015} for the Euclidean cyclic cases $(q,n)=(2,21)$ and $(3,16)$
+are recovered.
+
+The framework has two limitations. First, it assumes simple-root moduli and
+compatible twists; repeated-root settings \cite{dinh2010} are not covered, and
+incompatible components, whose hull is trivial, lie outside the orbit product.
+Second, codes are counted as labeled selections rather than as equivalence
+classes; counting isometry classes would require a specified group action
+\cite{vanLintWilson2001} and is a different problem. Within this scope the
+transfer-matrix formulation suggests that further additive statistics of factor
+selections, and the analogous enumerators over larger non-chain algebras, can be
+handled in the same way.
+
+\section*{Statements and Declarations}
+
+\noindent\textbf{Funding.} No specific funding was received for this research.
+
+\smallskip
+\noindent\textbf{Competing interests.} The author declares no competing
+interests.
+
+\smallskip
+\noindent\textbf{Author contributions.} Arun Kumar Yadav is the sole author,
+designed the study, and reviewed and approved the manuscript.
+
+\smallskip
+\noindent\textbf{Data availability.} This work uses no empirical datasets. All
+reported quantities are exact algebraic and combinatorial values determined by
+the parameters listed in the article. The programs that generate the tables of
+Section~\ref{sec:examples} and the generated coefficient tables are provided as
+supplementary material.
+
+\smallskip
+\noindent\textbf{Use of AI-assisted tools.} An AI-assisted tool (Arena.ai Agent
+Mode) was used to assist with mathematical checking, the development of the
+verification code and language editing. The author reviewed and approved all
+mathematical statements, computations and the final text, and takes full
+responsibility for the content.
+
+\appendix
+\section{Reproducibility of the computations in Section~\ref{sec:examples}}\label{app:repro}
+
+The orbit data are the inputs to the enumeration: the factorizations of the
+$M_s$, the reciprocal permutation $\tau_{s,k}$, and the resulting orbit lengths
+and degrees, from which the weights $w_O=m_sd_O$ are formed. All coefficients of
+$\Epoly(u,z)$, the hull polynomials and the conditional moments are computed from
+this data with exact integer and rational arithmetic, with no floating-point
+arithmetic anywhere in the reported values.
+
+Each family is evaluated in two independent ways: by the trace recurrence of
+Proposition~\ref{prop:algorithm}, and through the closed-form orbit coefficients
+of Proposition~\ref{prop:closed} followed by convolution. The two agree
+coefficient by coefficient for every family of Table~\ref{tab:validation}. The
+direct finite-field comparisons of Section~\ref{sec:verification} use
+component-field linear algebra, as described there, together with the
+quotient-coordinate treatment of the mixed algebra.
+
+For $\F_{32}$ with $n=31$ the enumerator accounts for all $2^{31}$ selections
+exactly through the orbit recurrence. Individual codes of that length were
+compared with the orbit formula on a random subsample, which is an auxiliary
+check of individual codes and not part of the count. The programs and the
+coefficient tables they generate accompany the manuscript as supplementary
+material and are not needed to state or verify the mathematics above.
+
+\bibliographystyle{sn-mathphys-num-local}
+\bibliography{references}
+
+\end{document}
