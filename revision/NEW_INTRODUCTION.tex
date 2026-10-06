@@ -1,0 +1,171 @@
+% Standalone copy of the rewritten Introduction of the manuscript
+% FINAL_SUBMISSION.tex (Section 1). The TikZ workflow figure that follows
+% the last paragraph in the manuscript is not repeated here; every label,
+% citation key and cross-reference is as in the manuscript.
+
+\section{Introduction}\label{sec:intro}
+
+The hull of a linear code $C$ is the intersection $C\cap C^{\perp}$ with its
+dual, and its dimension is a structural invariant of the code. Replacing the
+Euclidean inner product by a Frobenius-twisted pairing in one argument leads to
+the $k$-Galois inner product and to the $k$-Galois hull, of which the Euclidean
+and Hermitian hulls are the cases $k=0$ and $k$ equal to half the degree of the
+field \cite{fanZhang2017}. For cyclic-type codes the ambient space is a
+polynomial quotient, so duals, intersections and hence hull dimensions are
+accessible to factorization arguments \cite{huffmanPless2003}. Hull dimensions
+therefore describe a single code and, at the same time, define a statistic of an
+entire family; this paper studies the joint distribution of that statistic and
+the code dimension.
+
+The hull dimension, and not only its vanishing, controls several constructions.
+The algorithms that test permutation equivalence of two linear codes, and those
+that compute the automorphism group of a code, become expensive when the hull is
+large, so the hull dimension measures their complexity \cite{sendrier1997}.
+Codes with a trivial hull are the linear codes with complementary duals studied
+by Massey \cite{massey1992}, and they can attain the Gilbert--Varshamov bound
+\cite{sendrier2004}. In quantum coding the hull
+dimension of a classical code determines the number of entangled pairs needed by
+the corresponding entanglement-assisted quantum error-correcting code
+\cite{brun2006,wildeBrun2008}, and the same mechanism is still used to obtain
+quantum codes from constacyclic codes over rings \cite{zhang2026}.
+
+The hulls of cyclic and negacyclic codes over finite fields were the first to be
+described through the factorization of the modulus. Yang and Massey
+characterized when a cyclic code has a complementary dual \cite{yangMassey1994},
+Skersys computed the average dimension of the Euclidean hull over the cyclic
+codes of a fixed length \cite{skersys2003}, and Sangwisut et al.\ determined the
+Euclidean and Hermitian hull dimensions of cyclic and negacyclic codes in closed
+form and counted the codes realizing each prescribed hull dimension
+\cite{sangwisut2015}. Constacyclic codes, which contain both families, were
+studied in the same manner: Jitman and Sangwisut obtained the average dimension
+of the Hermitian hull of constacyclic codes over fields of square order
+\cite{jitmanSangwisut2018}, and Debnath et al.\ extended the dimension formulas
+to the $k$-Galois pairing for constacyclic codes over finite fields, together
+with counts of the codes of a prescribed Galois hull dimension under
+restrictions on the field parameters \cite{debnathConstacyclic2023}; a correction
+appeared in \cite{debnathCorrection2023}. This line continues with the average
+Galois hull dimension of constacyclic codes \cite{debnathAverage2025} and with
+the small values a Galois hull dimension can attain \cite{debnathSmall2026}.
+
+The Galois pairing also made the hull accessible for codes that are not
+constacyclic. Liu and Pan characterized the Galois hull of an arbitrary linear
+code over a finite field \cite{liuPan2020}, Cao constructed MDS codes with
+Galois hulls of prescribed dimensions \cite{cao2021}, and Fu and Liu treated
+Galois self-orthogonal constacyclic codes \cite{fuLiu2022}. More recently,
+generator descriptions have been derived that avoid passing to the dual code:
+generator polynomial matrices for the Galois hulls of multi-twisted codes
+\cite{eldinSole2026}, and generator matrices for the intersection of a linear
+code with its Galois dual \cite{eldinLeroy2026}, the operation that defines the
+hull.
+
+A separate question is not what the hull of one chosen code is, but how hull
+dimensions are distributed over a family. For unrestricted linear codes over a
+finite field, a mass formula gives the number of codes of a fixed length and
+Euclidean hull dimension \cite{sendrier1997}, and the sequences of these counts
+as the hull dimension grows have been studied recently \cite{bouyuklieva2026}.
+Distributions and asymptotics have also been obtained for double cyclic codes
+\cite{gao2023} and for double circulant and four circulant codes with small hull
+dimension \cite{aliabadi2026}. The averages computed in \cite{skersys2003},
+\cite{jitmanSangwisut2018} and \cite{debnathAverage2025} are the first moments of
+such distributions and do not determine them.
+
+When the alphabet is a ring rather than a field, the factorization theory
+changes. The structure theory of cyclic and negacyclic codes over finite chain
+rings \cite{dinhLopezPermouth2004} and the Hamming-distance theory over such
+rings \cite{nortonSalagean2000} provide the background for the analyses below.
+Talbi et al.\ studied the hulls of cyclic serial codes over a finite chain ring
+\cite{talbi2022}; Jitman et al.\ treated cyclic codes over $\mathbb{Z}_4$, where
+the length need not be coprime to the characteristic \cite{jitmanZ4}; and Pathak
+and Sharma covered the oddly even case, which requires separate arguments
+\cite{pathakZ4}. Constacyclic codes over a finite non-chain ring, with
+applications to quantum codes, were considered in \cite{zhang2026}. Closest to
+the present setting, Debnath et al.\ studied $k$-Galois hulls of constacyclic
+codes over affine algebra rings, exhibiting generators of the duals and hulls, a
+hull-dimension formula, LCD criteria and quantum-code applications
+\cite{debnathAffine2026}.
+
+Two kinds of results have therefore been obtained: descriptions of the hull of
+an individual code, and counts or averages of a single statistic of a family.
+Neither kind determines the joint distribution of the code dimension and the
+hull dimension, and it is convenient to separate three questions: (i) which hull
+dimensions occur; (ii) how many codes realize a prescribed hull dimension; and
+(iii) how many codes realize each pair $(\kappa,\eta)$ formed by a code
+dimension $\kappa$ and a hull dimension $\eta$. Questions (i) and (ii) are
+answered for cyclic and negacyclic codes in \cite{sangwisut2015} and, over
+finite fields, for constacyclic codes in \cite{debnathConstacyclic2023}, where
+the counts require restrictions on the field parameters, while for unrestricted
+linear codes with respect to the Euclidean dual, question (iii) is answered by
+\cite{sendrier1997} and \cite{bouyuklieva2026}. Over an affine algebra only
+question (i) has been answered, by the hull-dimension formula of
+\cite{debnathAffine2026}. Such a formula does not record the code dimensions at
+which the hull dimensions occur, and a hull-only count cannot be aggregated over
+the different factor selections into a joint distribution. Answering question
+(iii) in this setting therefore requires carrying the code dimension along with
+the hull dimension and treating cycles of the factor permutation that are longer
+than the fixed points and two-cycles that arise in the Euclidean and Hermitian
+cases.
+
+Motivated by this gap, we determine in this paper the joint distribution of code
+dimension and $k$-Galois hull dimension for simple-root constacyclic codes over
+a fixed square-free affine algebra $\A$ with labeled field components. The
+counted objects are labeled factor selections, in bijection with the
+$\lambda$-constacyclic codes over $\A$ (Lemmas~\ref{lem:complete}
+and~\ref{lem:global-code}); each is a distinct submodule of the fixed ambient
+space, and no isometry classes are formed. The output is a bivariate generating
+polynomial in which the exponents of $u$ and $z$ record the code dimension
+$\kappa$ and the $k$-Galois hull dimension $\eta_k$, so that its coefficients
+answer the three questions above simultaneously. The method is to
+decompose $\A$ into its field components, to translate $\lambda$-constacyclic
+codes into labeled selections of irreducible factors of the component moduli,
+and to follow the $k$-Galois dual through the Frobenius-twisted reciprocal
+permutation of those factors. Both statistics are additive over the orbits of
+this permutation, and this is what makes the enumeration factorize.
+
+The results of the paper are the following.
+(i) The $k$-Galois dual of a component code is generated by the normalized
+inverse-Frobenius reciprocal of the parity-check polynomial and is constacyclic
+with twist $\lambda_s^{-p^{d_s-k}}$ (Theorem~\ref{thm:dual-generator}), obtained
+from the classical Euclidean description of a constacyclic dual
+(Lemma~\ref{lem:ordinary-reciprocal}) by the coordinatewise inverse Frobenius
+(Proposition~\ref{prop:dual-translation}).
+(ii) Under the compatibility condition \eqref{eq:compat} the reciprocal
+permutes the irreducible factors of the component modulus. The hull support of a
+code is then a cyclic boundary statistic on the orbits of that permutation, and
+the hull dimension is a weighted count of the resulting $1$-to-$0$ transitions
+(Theorem~\ref{thm:hull-support} and Proposition~\ref{prop:boundary}).
+(iii) Each orbit contributes a two-state weighted transfer matrix whose trace,
+the orbit polynomial, also has a closed binomial form
+(Propositions~\ref{prop:transfer-matrix}--\ref{prop:closed}).
+(iv) The exact labeled joint $(\kappa,\eta)$ enumerator over the CRT product,
+with orbit weights $w_O=m_sd_O$, is
+\[
+\Epoly(u,z)=\sum_{C}u^{\kappa(C)}z^{\eta_k(C)}
+ =\prod_{s}\prod_{O\in\Os}\operatorname{tr}\bigl(T_{w_O}(u,z)^{a_O}\bigr)
+\]
+(Theorem~\ref{thm:central}), where the sum runs over all $\lambda$-constacyclic
+codes over $\A$. Items (i)--(iii) assemble established descriptions of component
+duals and closed-walk counting; the joint enumeration (iv) combines them into
+one product formula. From it the two marginal distributions, the exact LCD
+count, and the mean, variance and conditional distribution of the hull dimension
+follow by specialization
+(Corollaries~\ref{cor:total}--\ref{cor:conditional-variance}), while the
+extension-degree weights $w_O$ convert component dimensions into dimensions over
+the common base field.
+
+The enumeration is exact: the coefficients of $\Epoly(u,z)$ are integers, the
+conditional moments are reduced rationals, and for $q=32$, $n=31$ the orbit
+recurrence evaluates all $2^{31}$ labeled factor selections without enumerating
+them. For the families in characteristics $2$, $3$ and $5$ listed in
+Section~\ref{sec:verification}, every $k$-Galois hull dimension computed
+directly by finite-field linear algebra agrees with the orbit formula, and two
+published benchmark counts \cite{sangwisut2015} are recovered. The orbit product
+assumes simple-root moduli and compatible twists, and codes are counted as
+labeled selections rather than isometry classes; the scope is stated at the end
+of Section~\ref{sec:conclusion}. Figure~\ref{fig:pipeline} summarizes the
+workflow. Section~\ref{sec:setting} fixes the algebraic setting and the
+correspondence between constacyclic codes and labeled factor selections,
+Section~\ref{sec:duality} develops component duality and the reciprocal-orbit
+description of hull support, Section~\ref{sec:enumeration} derives the
+enumerators with their statistical consequences, Section~\ref{sec:examples}
+presents the examples and the computational validation, and
+Section~\ref{sec:conclusion} collects the conclusions.
