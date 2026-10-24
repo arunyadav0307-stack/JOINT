@@ -1,0 +1,101 @@
+{
+  "aeaqec_verified_examples": [
+    {
+      "file": "tables/aeaqec_mds/aeaqec_mds_p7.csv",
+      "orientations": [
+        "natural",
+        "swapped"
+      ],
+      "p": 7,
+      "rows": 30
+    },
+    {
+      "file": "tables/aeaqec_mds/aeaqec_mds_p11.csv",
+      "orientations": [
+        "natural",
+        "swapped"
+      ],
+      "p": 11,
+      "rows": 90
+    },
+    {
+      "file": "tables/aeaqec_mds/aeaqec_mds_p19.csv",
+      "orientations": [
+        "natural",
+        "swapped"
+      ],
+      "p": 19,
+      "rows": 306
+    }
+  ],
+  "eaqec_examples": [
+    {
+      "file": "tables/eaqec_p7.csv",
+      "p": 7,
+      "rows": 15
+    },
+    {
+      "file": "tables/eaqec_p11.csv",
+      "p": 11,
+      "rows": 45
+    },
+    {
+      "file": "tables/eaqec_p19.csv",
+      "p": 19,
+      "rows": 153
+    },
+    {
+      "file": "tables/eaqec_p23.csv",
+      "p": 23,
+      "rows": 231
+    },
+    {
+      "file": "tables/eaqec_p29.csv",
+      "p": 29,
+      "rows": 378
+    },
+    {
+      "file": "tables/eaqec_p31.csv",
+      "p": 31,
+      "rows": 435
+    },
+    {
+      "file": "tables/eaqec_p59.csv",
+      "p": 59,
+      "rows": 1653
+    },
+    {
+      "file": "tables/eaqec_p167.csv",
+      "p": 167,
+      "rows": 13695
+    }
+  ],
+  "paper_stated_examples": [
+    {
+      "file": "tables/paper_stated/paper_3_20_p7.csv",
+      "p": 7,
+      "rows": 15,
+      "status": "paper-stated-unverified"
+    },
+    {
+      "file": "tables/paper_stated/paper_3_20_p11.csv",
+      "p": 11,
+      "rows": 45,
+      "status": "paper-stated-unverified"
+    },
+    {
+      "file": "tables/paper_stated/paper_3_20_p19.csv",
+      "p": 19,
+      "rows": 153,
+      "status": "paper-stated-unverified"
+    }
+  ],
+  "schema_version": 1,
+  "verification": {
+    "data": "verification.json",
+    "deep": true,
+    "pass": true,
+    "report": "VERIFICATION_REPORT.md",
+    "s1_pair_cases": 22
+  }
+}
